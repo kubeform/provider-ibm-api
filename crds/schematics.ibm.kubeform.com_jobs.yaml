@@ -1,0 +1,1730 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  creationTimestamp: null
+  labels:
+    app.kubernetes.io/name: ibm.kubeform.com
+    app.kubernetes.io/part-of: kubeform.com
+  name: jobs.schematics.ibm.kubeform.com
+spec:
+  group: schematics.ibm.kubeform.com
+  names:
+    kind: Job
+    listKind: JobList
+    plural: jobs
+    singular: job
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .status.phase
+      name: Phase
+      type: string
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            properties:
+              providerRef:
+                description: LocalObjectReference contains enough information to let
+                  you locate the referenced object inside the same namespace.
+                properties:
+                  name:
+                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                      TODO: Add other useful fields. apiVersion, kind, uid?'
+                    type: string
+                type: object
+              resource:
+                properties:
+                  bastion:
+                    description: Complete target details with the user inputs and
+                      the system generated data.
+                    items:
+                      properties:
+                        ID:
+                          description: Target ID.
+                          type: string
+                        createdAt:
+                          description: Targets creation time.
+                          type: string
+                        createdBy:
+                          description: E-mail address of the user who created the
+                            targets.
+                          type: string
+                        credentialRef:
+                          description: Override credential for each resource.  Reference
+                            to credentials values, used by all the resources.
+                          type: string
+                        description:
+                          description: Target description.
+                          type: string
+                        name:
+                          description: Target name.
+                          type: string
+                        resourceIDS:
+                          description: Array of the resource IDs.
+                          items:
+                            type: string
+                          type: array
+                        resourceQuery:
+                          description: Resource selection query string.
+                          type: string
+                        sysLock:
+                          description: System lock status.
+                          items:
+                            properties:
+                              sysLocked:
+                                description: Is the Workspace locked by the Schematic
+                                  action ?.
+                                type: boolean
+                              sysLockedAt:
+                                description: When the user performed the action that
+                                  lead to lock the Workspace ?.
+                                type: string
+                              sysLockedBy:
+                                description: Name of the user who performed the action,
+                                  that lead to lock the Workspace.
+                                type: string
+                            type: object
+                          type: array
+                        type:
+                          description: Target type (`cluster`, `vsi`, `icd`, `vpc`).
+                          type: string
+                        updatedAt:
+                          description: Targets updation time.
+                          type: string
+                        updatedBy:
+                          description: E-mail address of user who updated the targets.
+                          type: string
+                      type: object
+                    type: array
+                  commandName:
+                    description: Schematics job command name.
+                    type: string
+                  commandObject:
+                    description: Name of the Schematics automation resource.
+                    type: string
+                  commandObjectID:
+                    description: Job command object ID (`workspace-id, action-id or
+                      control-id`).
+                    type: string
+                  commandOptions:
+                    description: Command line options for the command.
+                    items:
+                      type: string
+                    type: array
+                  commandParameter:
+                    description: Schematics job command parameter (`playbook-name,
+                      capsule-name or flow-name`).
+                    type: string
+                  data:
+                    description: Job data.
+                    items:
+                      properties:
+                        actionJobData:
+                          description: Action Job data.
+                          items:
+                            properties:
+                              actionName:
+                                description: Flow name.
+                                type: string
+                              inputs:
+                                description: Input variables data used by an action
+                                  job.
+                                items:
+                                  properties:
+                                    link:
+                                      description: Reference link to the variable
+                                        value By default the expression will point
+                                        to self.value.
+                                      type: string
+                                    metadata:
+                                      description: User editable metadata for the
+                                        variables.
+                                      items:
+                                        properties:
+                                          aliases:
+                                            description: List of aliases for the variable
+                                              name.
+                                            items:
+                                              type: string
+                                            type: array
+                                          defaultValue:
+                                            description: Default value for the variable,
+                                              if the override value is not specified.
+                                            type: string
+                                          description:
+                                            description: Description of the meta data.
+                                            type: string
+                                          groupBy:
+                                            description: Display name of the group
+                                              this variable belongs to.
+                                            type: string
+                                          hidden:
+                                            description: If true, the variable will
+                                              not be displayed on UI or CLI.
+                                            type: boolean
+                                          immutable:
+                                            description: Is the variable readonly
+                                              ?.
+                                            type: boolean
+                                          matches:
+                                            description: Regex for the variable value.
+                                            type: string
+                                          maxLength:
+                                            description: Maximum length of the variable
+                                              value. Applicable for string type.
+                                            format: int64
+                                            type: integer
+                                          maxValue:
+                                            description: Maximum value of the variable.
+                                              Applicable for integer type.
+                                            format: int64
+                                            type: integer
+                                          minLength:
+                                            description: Minimum length of the variable
+                                              value. Applicable for string type.
+                                            format: int64
+                                            type: integer
+                                          minValue:
+                                            description: Minimum value of the variable.
+                                              Applicable for integer type.
+                                            format: int64
+                                            type: integer
+                                          options:
+                                            description: List of possible values for
+                                              this variable.  If type is integer or
+                                              date, then the array of string will
+                                              be  converted to array of integers or
+                                              date during runtime.
+                                            items:
+                                              type: string
+                                            type: array
+                                          position:
+                                            description: Relative position of this
+                                              variable in a list.
+                                            format: int64
+                                            type: integer
+                                          secure:
+                                            description: Is the variable secure or
+                                              sensitive ?.
+                                            type: boolean
+                                          source:
+                                            description: Source of this meta-data.
+                                            type: string
+                                          type:
+                                            description: Type of the variable.
+                                            type: string
+                                        type: object
+                                      type: array
+                                    name:
+                                      description: Name of the variable.
+                                      type: string
+                                    value:
+                                      description: Value for the variable or reference
+                                        to the value.
+                                      type: string
+                                  type: object
+                                type: array
+                              outputs:
+                                description: Output variables data from an action
+                                  job.
+                                items:
+                                  properties:
+                                    link:
+                                      description: Reference link to the variable
+                                        value By default the expression will point
+                                        to self.value.
+                                      type: string
+                                    metadata:
+                                      description: User editable metadata for the
+                                        variables.
+                                      items:
+                                        properties:
+                                          aliases:
+                                            description: List of aliases for the variable
+                                              name.
+                                            items:
+                                              type: string
+                                            type: array
+                                          defaultValue:
+                                            description: Default value for the variable,
+                                              if the override value is not specified.
+                                            type: string
+                                          description:
+                                            description: Description of the meta data.
+                                            type: string
+                                          groupBy:
+                                            description: Display name of the group
+                                              this variable belongs to.
+                                            type: string
+                                          hidden:
+                                            description: If true, the variable will
+                                              not be displayed on UI or CLI.
+                                            type: boolean
+                                          immutable:
+                                            description: Is the variable readonly
+                                              ?.
+                                            type: boolean
+                                          matches:
+                                            description: Regex for the variable value.
+                                            type: string
+                                          maxLength:
+                                            description: Maximum length of the variable
+                                              value. Applicable for string type.
+                                            format: int64
+                                            type: integer
+                                          maxValue:
+                                            description: Maximum value of the variable.
+                                              Applicable for integer type.
+                                            format: int64
+                                            type: integer
+                                          minLength:
+                                            description: Minimum length of the variable
+                                              value. Applicable for string type.
+                                            format: int64
+                                            type: integer
+                                          minValue:
+                                            description: Minimum value of the variable.
+                                              Applicable for integer type.
+                                            format: int64
+                                            type: integer
+                                          options:
+                                            description: List of possible values for
+                                              this variable.  If type is integer or
+                                              date, then the array of string will
+                                              be  converted to array of integers or
+                                              date during runtime.
+                                            items:
+                                              type: string
+                                            type: array
+                                          position:
+                                            description: Relative position of this
+                                              variable in a list.
+                                            format: int64
+                                            type: integer
+                                          secure:
+                                            description: Is the variable secure or
+                                              sensitive ?.
+                                            type: boolean
+                                          source:
+                                            description: Source of this meta-data.
+                                            type: string
+                                          type:
+                                            description: Type of the variable.
+                                            type: string
+                                        type: object
+                                      type: array
+                                    name:
+                                      description: Name of the variable.
+                                      type: string
+                                    value:
+                                      description: Value for the variable or reference
+                                        to the value.
+                                      type: string
+                                  type: object
+                                type: array
+                              settings:
+                                description: Environment variables used by all the
+                                  templates in an action.
+                                items:
+                                  properties:
+                                    link:
+                                      description: Reference link to the variable
+                                        value By default the expression will point
+                                        to self.value.
+                                      type: string
+                                    metadata:
+                                      description: User editable metadata for the
+                                        variables.
+                                      items:
+                                        properties:
+                                          aliases:
+                                            description: List of aliases for the variable
+                                              name.
+                                            items:
+                                              type: string
+                                            type: array
+                                          defaultValue:
+                                            description: Default value for the variable,
+                                              if the override value is not specified.
+                                            type: string
+                                          description:
+                                            description: Description of the meta data.
+                                            type: string
+                                          groupBy:
+                                            description: Display name of the group
+                                              this variable belongs to.
+                                            type: string
+                                          hidden:
+                                            description: If true, the variable will
+                                              not be displayed on UI or CLI.
+                                            type: boolean
+                                          immutable:
+                                            description: Is the variable readonly
+                                              ?.
+                                            type: boolean
+                                          matches:
+                                            description: Regex for the variable value.
+                                            type: string
+                                          maxLength:
+                                            description: Maximum length of the variable
+                                              value. Applicable for string type.
+                                            format: int64
+                                            type: integer
+                                          maxValue:
+                                            description: Maximum value of the variable.
+                                              Applicable for integer type.
+                                            format: int64
+                                            type: integer
+                                          minLength:
+                                            description: Minimum length of the variable
+                                              value. Applicable for string type.
+                                            format: int64
+                                            type: integer
+                                          minValue:
+                                            description: Minimum value of the variable.
+                                              Applicable for integer type.
+                                            format: int64
+                                            type: integer
+                                          options:
+                                            description: List of possible values for
+                                              this variable.  If type is integer or
+                                              date, then the array of string will
+                                              be  converted to array of integers or
+                                              date during runtime.
+                                            items:
+                                              type: string
+                                            type: array
+                                          position:
+                                            description: Relative position of this
+                                              variable in a list.
+                                            format: int64
+                                            type: integer
+                                          secure:
+                                            description: Is the variable secure or
+                                              sensitive ?.
+                                            type: boolean
+                                          source:
+                                            description: Source of this meta-data.
+                                            type: string
+                                          type:
+                                            description: Type of the variable.
+                                            type: string
+                                        type: object
+                                      type: array
+                                    name:
+                                      description: Name of the variable.
+                                      type: string
+                                    value:
+                                      description: Value for the variable or reference
+                                        to the value.
+                                      type: string
+                                  type: object
+                                type: array
+                              updatedAt:
+                                description: Job status updation timestamp.
+                                type: string
+                            type: object
+                          type: array
+                        jobType:
+                          description: Type of the job.
+                          type: string
+                      required:
+                      - jobType
+                      type: object
+                    type: array
+                  description:
+                    description: Job description derived from the related action.
+                    type: string
+                  duration:
+                    description: Duration of job execution, for example, `40 sec`.
+                    type: string
+                  endAt:
+                    description: Job end time.
+                    type: string
+                  id:
+                    type: string
+                  jobEnvSettings:
+                    description: Environment variables used by the job while performing
+                      an action.
+                    items:
+                      properties:
+                        link:
+                          description: Reference link to the variable value By default
+                            the expression will point to self.value.
+                          type: string
+                        metadata:
+                          description: User editable metadata for the variables.
+                          items:
+                            properties:
+                              aliases:
+                                description: List of aliases for the variable name.
+                                items:
+                                  type: string
+                                type: array
+                              defaultValue:
+                                description: Default value for the variable, if the
+                                  override value is not specified.
+                                type: string
+                              description:
+                                description: Description of the meta data.
+                                type: string
+                              groupBy:
+                                description: Display name of the group this variable
+                                  belongs to.
+                                type: string
+                              hidden:
+                                description: If true, the variable will not be displayed
+                                  on UI or CLI.
+                                type: boolean
+                              immutable:
+                                description: Is the variable readonly ?.
+                                type: boolean
+                              matches:
+                                description: Regex for the variable value.
+                                type: string
+                              maxLength:
+                                description: Maximum length of the variable value.
+                                  Applicable for string type.
+                                format: int64
+                                type: integer
+                              maxValue:
+                                description: Maximum value of the variable. Applicable
+                                  for integer type.
+                                format: int64
+                                type: integer
+                              minLength:
+                                description: Minimum length of the variable value.
+                                  Applicable for string type.
+                                format: int64
+                                type: integer
+                              minValue:
+                                description: Minimum value of the variable. Applicable
+                                  for integer type.
+                                format: int64
+                                type: integer
+                              options:
+                                description: List of possible values for this variable.  If
+                                  type is integer or date, then the array of string
+                                  will be  converted to array of integers or date
+                                  during runtime.
+                                items:
+                                  type: string
+                                type: array
+                              position:
+                                description: Relative position of this variable in
+                                  a list.
+                                format: int64
+                                type: integer
+                              secure:
+                                description: Is the variable secure or sensitive ?.
+                                type: boolean
+                              source:
+                                description: Source of this meta-data.
+                                type: string
+                              type:
+                                description: Type of the variable.
+                                type: string
+                            required:
+                            - type
+                            type: object
+                          type: array
+                        name:
+                          description: Name of the variable.
+                          type: string
+                        value:
+                          description: Value for the variable or reference to the
+                            value.
+                          type: string
+                      required:
+                      - name
+                      - value
+                      type: object
+                    type: array
+                  jobInputs:
+                    description: Job inputs used by an action.
+                    items:
+                      properties:
+                        link:
+                          description: Reference link to the variable value By default
+                            the expression will point to self.value.
+                          type: string
+                        metadata:
+                          description: User editable metadata for the variables.
+                          items:
+                            properties:
+                              aliases:
+                                description: List of aliases for the variable name.
+                                items:
+                                  type: string
+                                type: array
+                              defaultValue:
+                                description: Default value for the variable, if the
+                                  override value is not specified.
+                                type: string
+                              description:
+                                description: Description of the meta data.
+                                type: string
+                              groupBy:
+                                description: Display name of the group this variable
+                                  belongs to.
+                                type: string
+                              hidden:
+                                description: If true, the variable will not be displayed
+                                  on UI or CLI.
+                                type: boolean
+                              immutable:
+                                description: Is the variable readonly ?.
+                                type: boolean
+                              matches:
+                                description: Regex for the variable value.
+                                type: string
+                              maxLength:
+                                description: Maximum length of the variable value.
+                                  Applicable for string type.
+                                format: int64
+                                type: integer
+                              maxValue:
+                                description: Maximum value of the variable. Applicable
+                                  for integer type.
+                                format: int64
+                                type: integer
+                              minLength:
+                                description: Minimum length of the variable value.
+                                  Applicable for string type.
+                                format: int64
+                                type: integer
+                              minValue:
+                                description: Minimum value of the variable. Applicable
+                                  for integer type.
+                                format: int64
+                                type: integer
+                              options:
+                                description: List of possible values for this variable.  If
+                                  type is integer or date, then the array of string
+                                  will be  converted to array of integers or date
+                                  during runtime.
+                                items:
+                                  type: string
+                                type: array
+                              position:
+                                description: Relative position of this variable in
+                                  a list.
+                                format: int64
+                                type: integer
+                              secure:
+                                description: Is the variable secure or sensitive ?.
+                                type: boolean
+                              source:
+                                description: Source of this meta-data.
+                                type: string
+                              type:
+                                description: Type of the variable.
+                                type: string
+                            required:
+                            - type
+                            type: object
+                          type: array
+                        name:
+                          description: Name of the variable.
+                          type: string
+                        value:
+                          description: Value for the variable or reference to the
+                            value.
+                          type: string
+                      required:
+                      - name
+                      - value
+                      type: object
+                    type: array
+                  jobLogSummary:
+                    description: Job log summary record.
+                    items:
+                      properties:
+                        actionJob:
+                          description: Flow Job log summary.
+                          items:
+                            properties:
+                              playCount:
+                                description: number of plays in playbook.
+                                format: double
+                                type: number
+                              recap:
+                                description: Recap records.
+                                items:
+                                  properties:
+                                    changed:
+                                      description: Number of changed.
+                                      format: double
+                                      type: number
+                                    failed:
+                                      description: Number of failed.
+                                      format: double
+                                      type: number
+                                    ok:
+                                      description: Number of OK.
+                                      format: double
+                                      type: number
+                                    skipped:
+                                      description: Number of skipped.
+                                      format: double
+                                      type: number
+                                    target:
+                                      description: List of target or host name.
+                                      items:
+                                        type: string
+                                      type: array
+                                    unreachable:
+                                      description: Number of unreachable.
+                                      format: double
+                                      type: number
+                                  type: object
+                                type: array
+                              targetCount:
+                                description: number of targets or hosts.
+                                format: double
+                                type: number
+                              taskCount:
+                                description: number of tasks in playbook.
+                                format: double
+                                type: number
+                            type: object
+                          type: array
+                        elapsedTime:
+                          description: Job log elapsed time (`log_analyzed_till -
+                            log_start_at`).
+                          format: double
+                          type: number
+                        jobID:
+                          description: Workspace ID.
+                          type: string
+                        jobType:
+                          description: Type of Job.
+                          type: string
+                        logAnalyzedTill:
+                          description: Job log update timestamp.
+                          type: string
+                        logErrors:
+                          description: Job log errors.
+                          items:
+                            properties:
+                              errorCode:
+                                description: Error code in the Log.
+                                type: string
+                              errorCount:
+                                description: Number of occurrence.
+                                format: double
+                                type: number
+                              errorMsg:
+                                description: Summary error message in the log.
+                                type: string
+                            type: object
+                          type: array
+                        logStartAt:
+                          description: Job log start timestamp.
+                          type: string
+                        repoDownloadJob:
+                          description: Repo download Job log summary.
+                          items:
+                            properties:
+                              detectedFiletype:
+                                description: Detected template or data file type.
+                                type: string
+                              inputsCount:
+                                description: Number of inputs detected.
+                                type: string
+                              outputsCount:
+                                description: Number of outputs detected.
+                                type: string
+                              quarantinedFileCount:
+                                description: Number of files quarantined.
+                                format: double
+                                type: number
+                              scannedFileCount:
+                                description: Number of files scanned.
+                                format: double
+                                type: number
+                            type: object
+                          type: array
+                      type: object
+                    type: array
+                  location:
+                    description: List of action locations supported by IBM Cloud Schematics
+                      service.  **Note** this does not limit the location of the resources
+                      provisioned using Schematics.
+                    type: string
+                  logStoreURL:
+                    description: Job log store URL.
+                    type: string
+                  name:
+                    description: Job name, uniquely derived from the related action.
+                    type: string
+                  resourceGroup:
+                    description: Resource group name derived from the related action.
+                    type: string
+                  resultsURL:
+                    description: Job results store URL.
+                    type: string
+                  startAt:
+                    description: Job start time.
+                    type: string
+                  stateStoreURL:
+                    description: Job state store URL.
+                    type: string
+                  status:
+                    description: Job Status.
+                    items:
+                      properties:
+                        actionJobStatus:
+                          description: Action Job Status.
+                          items:
+                            properties:
+                              actionName:
+                                description: Action name.
+                                type: string
+                              bastionStatusCode:
+                                description: Status of the resources.
+                                type: string
+                              bastionStatusMessage:
+                                description: Bastion status message to be displayed
+                                  along with the `bastion_status_code`.
+                                type: string
+                              statusCode:
+                                description: Status of the jobs.
+                                type: string
+                              statusMessage:
+                                description: Action job status message to be displayed
+                                  along with the `action_status_code`.
+                                type: string
+                              targetsStatusCode:
+                                description: Status of the resources.
+                                type: string
+                              targetsStatusMessage:
+                                description: Aggregated status message for all target
+                                  resources, to be displayed along with the `targets_status_code`.
+                                type: string
+                              updatedAt:
+                                description: Job status updation timestamp.
+                                type: string
+                            type: object
+                          type: array
+                      type: object
+                    type: array
+                  submittedAt:
+                    description: Job submission time.
+                    type: string
+                  submittedBy:
+                    description: E-mail address of the user who submitted the job.
+                    type: string
+                  tags:
+                    description: User defined tags, while running the job.
+                    items:
+                      type: string
+                    type: array
+                  targetsIni:
+                    description: 'Inventory of host and host group for the playbook
+                      in `INI` file format. For example, `"targets_ini": "[webserverhost]  172.22.192.6  [dbhost]  172.22.192.5"`.
+                      For more information, about an inventory host group syntax,
+                      see [Inventory host groups](/docs/schematics?topic=schematics-schematics-cli-reference#schematics-inventory-host-grps).'
+                    type: string
+                  updatedAt:
+                    description: Job status updation timestamp.
+                    type: string
+                required:
+                - commandName
+                - commandObject
+                - commandObjectID
+                - commandParameter
+                type: object
+              state:
+                properties:
+                  bastion:
+                    description: Complete target details with the user inputs and
+                      the system generated data.
+                    items:
+                      properties:
+                        ID:
+                          description: Target ID.
+                          type: string
+                        createdAt:
+                          description: Targets creation time.
+                          type: string
+                        createdBy:
+                          description: E-mail address of the user who created the
+                            targets.
+                          type: string
+                        credentialRef:
+                          description: Override credential for each resource.  Reference
+                            to credentials values, used by all the resources.
+                          type: string
+                        description:
+                          description: Target description.
+                          type: string
+                        name:
+                          description: Target name.
+                          type: string
+                        resourceIDS:
+                          description: Array of the resource IDs.
+                          items:
+                            type: string
+                          type: array
+                        resourceQuery:
+                          description: Resource selection query string.
+                          type: string
+                        sysLock:
+                          description: System lock status.
+                          items:
+                            properties:
+                              sysLocked:
+                                description: Is the Workspace locked by the Schematic
+                                  action ?.
+                                type: boolean
+                              sysLockedAt:
+                                description: When the user performed the action that
+                                  lead to lock the Workspace ?.
+                                type: string
+                              sysLockedBy:
+                                description: Name of the user who performed the action,
+                                  that lead to lock the Workspace.
+                                type: string
+                            type: object
+                          type: array
+                        type:
+                          description: Target type (`cluster`, `vsi`, `icd`, `vpc`).
+                          type: string
+                        updatedAt:
+                          description: Targets updation time.
+                          type: string
+                        updatedBy:
+                          description: E-mail address of user who updated the targets.
+                          type: string
+                      type: object
+                    type: array
+                  commandName:
+                    description: Schematics job command name.
+                    type: string
+                  commandObject:
+                    description: Name of the Schematics automation resource.
+                    type: string
+                  commandObjectID:
+                    description: Job command object ID (`workspace-id, action-id or
+                      control-id`).
+                    type: string
+                  commandOptions:
+                    description: Command line options for the command.
+                    items:
+                      type: string
+                    type: array
+                  commandParameter:
+                    description: Schematics job command parameter (`playbook-name,
+                      capsule-name or flow-name`).
+                    type: string
+                  data:
+                    description: Job data.
+                    items:
+                      properties:
+                        actionJobData:
+                          description: Action Job data.
+                          items:
+                            properties:
+                              actionName:
+                                description: Flow name.
+                                type: string
+                              inputs:
+                                description: Input variables data used by an action
+                                  job.
+                                items:
+                                  properties:
+                                    link:
+                                      description: Reference link to the variable
+                                        value By default the expression will point
+                                        to self.value.
+                                      type: string
+                                    metadata:
+                                      description: User editable metadata for the
+                                        variables.
+                                      items:
+                                        properties:
+                                          aliases:
+                                            description: List of aliases for the variable
+                                              name.
+                                            items:
+                                              type: string
+                                            type: array
+                                          defaultValue:
+                                            description: Default value for the variable,
+                                              if the override value is not specified.
+                                            type: string
+                                          description:
+                                            description: Description of the meta data.
+                                            type: string
+                                          groupBy:
+                                            description: Display name of the group
+                                              this variable belongs to.
+                                            type: string
+                                          hidden:
+                                            description: If true, the variable will
+                                              not be displayed on UI or CLI.
+                                            type: boolean
+                                          immutable:
+                                            description: Is the variable readonly
+                                              ?.
+                                            type: boolean
+                                          matches:
+                                            description: Regex for the variable value.
+                                            type: string
+                                          maxLength:
+                                            description: Maximum length of the variable
+                                              value. Applicable for string type.
+                                            format: int64
+                                            type: integer
+                                          maxValue:
+                                            description: Maximum value of the variable.
+                                              Applicable for integer type.
+                                            format: int64
+                                            type: integer
+                                          minLength:
+                                            description: Minimum length of the variable
+                                              value. Applicable for string type.
+                                            format: int64
+                                            type: integer
+                                          minValue:
+                                            description: Minimum value of the variable.
+                                              Applicable for integer type.
+                                            format: int64
+                                            type: integer
+                                          options:
+                                            description: List of possible values for
+                                              this variable.  If type is integer or
+                                              date, then the array of string will
+                                              be  converted to array of integers or
+                                              date during runtime.
+                                            items:
+                                              type: string
+                                            type: array
+                                          position:
+                                            description: Relative position of this
+                                              variable in a list.
+                                            format: int64
+                                            type: integer
+                                          secure:
+                                            description: Is the variable secure or
+                                              sensitive ?.
+                                            type: boolean
+                                          source:
+                                            description: Source of this meta-data.
+                                            type: string
+                                          type:
+                                            description: Type of the variable.
+                                            type: string
+                                        type: object
+                                      type: array
+                                    name:
+                                      description: Name of the variable.
+                                      type: string
+                                    value:
+                                      description: Value for the variable or reference
+                                        to the value.
+                                      type: string
+                                  type: object
+                                type: array
+                              outputs:
+                                description: Output variables data from an action
+                                  job.
+                                items:
+                                  properties:
+                                    link:
+                                      description: Reference link to the variable
+                                        value By default the expression will point
+                                        to self.value.
+                                      type: string
+                                    metadata:
+                                      description: User editable metadata for the
+                                        variables.
+                                      items:
+                                        properties:
+                                          aliases:
+                                            description: List of aliases for the variable
+                                              name.
+                                            items:
+                                              type: string
+                                            type: array
+                                          defaultValue:
+                                            description: Default value for the variable,
+                                              if the override value is not specified.
+                                            type: string
+                                          description:
+                                            description: Description of the meta data.
+                                            type: string
+                                          groupBy:
+                                            description: Display name of the group
+                                              this variable belongs to.
+                                            type: string
+                                          hidden:
+                                            description: If true, the variable will
+                                              not be displayed on UI or CLI.
+                                            type: boolean
+                                          immutable:
+                                            description: Is the variable readonly
+                                              ?.
+                                            type: boolean
+                                          matches:
+                                            description: Regex for the variable value.
+                                            type: string
+                                          maxLength:
+                                            description: Maximum length of the variable
+                                              value. Applicable for string type.
+                                            format: int64
+                                            type: integer
+                                          maxValue:
+                                            description: Maximum value of the variable.
+                                              Applicable for integer type.
+                                            format: int64
+                                            type: integer
+                                          minLength:
+                                            description: Minimum length of the variable
+                                              value. Applicable for string type.
+                                            format: int64
+                                            type: integer
+                                          minValue:
+                                            description: Minimum value of the variable.
+                                              Applicable for integer type.
+                                            format: int64
+                                            type: integer
+                                          options:
+                                            description: List of possible values for
+                                              this variable.  If type is integer or
+                                              date, then the array of string will
+                                              be  converted to array of integers or
+                                              date during runtime.
+                                            items:
+                                              type: string
+                                            type: array
+                                          position:
+                                            description: Relative position of this
+                                              variable in a list.
+                                            format: int64
+                                            type: integer
+                                          secure:
+                                            description: Is the variable secure or
+                                              sensitive ?.
+                                            type: boolean
+                                          source:
+                                            description: Source of this meta-data.
+                                            type: string
+                                          type:
+                                            description: Type of the variable.
+                                            type: string
+                                        type: object
+                                      type: array
+                                    name:
+                                      description: Name of the variable.
+                                      type: string
+                                    value:
+                                      description: Value for the variable or reference
+                                        to the value.
+                                      type: string
+                                  type: object
+                                type: array
+                              settings:
+                                description: Environment variables used by all the
+                                  templates in an action.
+                                items:
+                                  properties:
+                                    link:
+                                      description: Reference link to the variable
+                                        value By default the expression will point
+                                        to self.value.
+                                      type: string
+                                    metadata:
+                                      description: User editable metadata for the
+                                        variables.
+                                      items:
+                                        properties:
+                                          aliases:
+                                            description: List of aliases for the variable
+                                              name.
+                                            items:
+                                              type: string
+                                            type: array
+                                          defaultValue:
+                                            description: Default value for the variable,
+                                              if the override value is not specified.
+                                            type: string
+                                          description:
+                                            description: Description of the meta data.
+                                            type: string
+                                          groupBy:
+                                            description: Display name of the group
+                                              this variable belongs to.
+                                            type: string
+                                          hidden:
+                                            description: If true, the variable will
+                                              not be displayed on UI or CLI.
+                                            type: boolean
+                                          immutable:
+                                            description: Is the variable readonly
+                                              ?.
+                                            type: boolean
+                                          matches:
+                                            description: Regex for the variable value.
+                                            type: string
+                                          maxLength:
+                                            description: Maximum length of the variable
+                                              value. Applicable for string type.
+                                            format: int64
+                                            type: integer
+                                          maxValue:
+                                            description: Maximum value of the variable.
+                                              Applicable for integer type.
+                                            format: int64
+                                            type: integer
+                                          minLength:
+                                            description: Minimum length of the variable
+                                              value. Applicable for string type.
+                                            format: int64
+                                            type: integer
+                                          minValue:
+                                            description: Minimum value of the variable.
+                                              Applicable for integer type.
+                                            format: int64
+                                            type: integer
+                                          options:
+                                            description: List of possible values for
+                                              this variable.  If type is integer or
+                                              date, then the array of string will
+                                              be  converted to array of integers or
+                                              date during runtime.
+                                            items:
+                                              type: string
+                                            type: array
+                                          position:
+                                            description: Relative position of this
+                                              variable in a list.
+                                            format: int64
+                                            type: integer
+                                          secure:
+                                            description: Is the variable secure or
+                                              sensitive ?.
+                                            type: boolean
+                                          source:
+                                            description: Source of this meta-data.
+                                            type: string
+                                          type:
+                                            description: Type of the variable.
+                                            type: string
+                                        type: object
+                                      type: array
+                                    name:
+                                      description: Name of the variable.
+                                      type: string
+                                    value:
+                                      description: Value for the variable or reference
+                                        to the value.
+                                      type: string
+                                  type: object
+                                type: array
+                              updatedAt:
+                                description: Job status updation timestamp.
+                                type: string
+                            type: object
+                          type: array
+                        jobType:
+                          description: Type of the job.
+                          type: string
+                      required:
+                      - jobType
+                      type: object
+                    type: array
+                  description:
+                    description: Job description derived from the related action.
+                    type: string
+                  duration:
+                    description: Duration of job execution, for example, `40 sec`.
+                    type: string
+                  endAt:
+                    description: Job end time.
+                    type: string
+                  id:
+                    type: string
+                  jobEnvSettings:
+                    description: Environment variables used by the job while performing
+                      an action.
+                    items:
+                      properties:
+                        link:
+                          description: Reference link to the variable value By default
+                            the expression will point to self.value.
+                          type: string
+                        metadata:
+                          description: User editable metadata for the variables.
+                          items:
+                            properties:
+                              aliases:
+                                description: List of aliases for the variable name.
+                                items:
+                                  type: string
+                                type: array
+                              defaultValue:
+                                description: Default value for the variable, if the
+                                  override value is not specified.
+                                type: string
+                              description:
+                                description: Description of the meta data.
+                                type: string
+                              groupBy:
+                                description: Display name of the group this variable
+                                  belongs to.
+                                type: string
+                              hidden:
+                                description: If true, the variable will not be displayed
+                                  on UI or CLI.
+                                type: boolean
+                              immutable:
+                                description: Is the variable readonly ?.
+                                type: boolean
+                              matches:
+                                description: Regex for the variable value.
+                                type: string
+                              maxLength:
+                                description: Maximum length of the variable value.
+                                  Applicable for string type.
+                                format: int64
+                                type: integer
+                              maxValue:
+                                description: Maximum value of the variable. Applicable
+                                  for integer type.
+                                format: int64
+                                type: integer
+                              minLength:
+                                description: Minimum length of the variable value.
+                                  Applicable for string type.
+                                format: int64
+                                type: integer
+                              minValue:
+                                description: Minimum value of the variable. Applicable
+                                  for integer type.
+                                format: int64
+                                type: integer
+                              options:
+                                description: List of possible values for this variable.  If
+                                  type is integer or date, then the array of string
+                                  will be  converted to array of integers or date
+                                  during runtime.
+                                items:
+                                  type: string
+                                type: array
+                              position:
+                                description: Relative position of this variable in
+                                  a list.
+                                format: int64
+                                type: integer
+                              secure:
+                                description: Is the variable secure or sensitive ?.
+                                type: boolean
+                              source:
+                                description: Source of this meta-data.
+                                type: string
+                              type:
+                                description: Type of the variable.
+                                type: string
+                            required:
+                            - type
+                            type: object
+                          type: array
+                        name:
+                          description: Name of the variable.
+                          type: string
+                        value:
+                          description: Value for the variable or reference to the
+                            value.
+                          type: string
+                      required:
+                      - name
+                      - value
+                      type: object
+                    type: array
+                  jobInputs:
+                    description: Job inputs used by an action.
+                    items:
+                      properties:
+                        link:
+                          description: Reference link to the variable value By default
+                            the expression will point to self.value.
+                          type: string
+                        metadata:
+                          description: User editable metadata for the variables.
+                          items:
+                            properties:
+                              aliases:
+                                description: List of aliases for the variable name.
+                                items:
+                                  type: string
+                                type: array
+                              defaultValue:
+                                description: Default value for the variable, if the
+                                  override value is not specified.
+                                type: string
+                              description:
+                                description: Description of the meta data.
+                                type: string
+                              groupBy:
+                                description: Display name of the group this variable
+                                  belongs to.
+                                type: string
+                              hidden:
+                                description: If true, the variable will not be displayed
+                                  on UI or CLI.
+                                type: boolean
+                              immutable:
+                                description: Is the variable readonly ?.
+                                type: boolean
+                              matches:
+                                description: Regex for the variable value.
+                                type: string
+                              maxLength:
+                                description: Maximum length of the variable value.
+                                  Applicable for string type.
+                                format: int64
+                                type: integer
+                              maxValue:
+                                description: Maximum value of the variable. Applicable
+                                  for integer type.
+                                format: int64
+                                type: integer
+                              minLength:
+                                description: Minimum length of the variable value.
+                                  Applicable for string type.
+                                format: int64
+                                type: integer
+                              minValue:
+                                description: Minimum value of the variable. Applicable
+                                  for integer type.
+                                format: int64
+                                type: integer
+                              options:
+                                description: List of possible values for this variable.  If
+                                  type is integer or date, then the array of string
+                                  will be  converted to array of integers or date
+                                  during runtime.
+                                items:
+                                  type: string
+                                type: array
+                              position:
+                                description: Relative position of this variable in
+                                  a list.
+                                format: int64
+                                type: integer
+                              secure:
+                                description: Is the variable secure or sensitive ?.
+                                type: boolean
+                              source:
+                                description: Source of this meta-data.
+                                type: string
+                              type:
+                                description: Type of the variable.
+                                type: string
+                            required:
+                            - type
+                            type: object
+                          type: array
+                        name:
+                          description: Name of the variable.
+                          type: string
+                        value:
+                          description: Value for the variable or reference to the
+                            value.
+                          type: string
+                      required:
+                      - name
+                      - value
+                      type: object
+                    type: array
+                  jobLogSummary:
+                    description: Job log summary record.
+                    items:
+                      properties:
+                        actionJob:
+                          description: Flow Job log summary.
+                          items:
+                            properties:
+                              playCount:
+                                description: number of plays in playbook.
+                                format: double
+                                type: number
+                              recap:
+                                description: Recap records.
+                                items:
+                                  properties:
+                                    changed:
+                                      description: Number of changed.
+                                      format: double
+                                      type: number
+                                    failed:
+                                      description: Number of failed.
+                                      format: double
+                                      type: number
+                                    ok:
+                                      description: Number of OK.
+                                      format: double
+                                      type: number
+                                    skipped:
+                                      description: Number of skipped.
+                                      format: double
+                                      type: number
+                                    target:
+                                      description: List of target or host name.
+                                      items:
+                                        type: string
+                                      type: array
+                                    unreachable:
+                                      description: Number of unreachable.
+                                      format: double
+                                      type: number
+                                  type: object
+                                type: array
+                              targetCount:
+                                description: number of targets or hosts.
+                                format: double
+                                type: number
+                              taskCount:
+                                description: number of tasks in playbook.
+                                format: double
+                                type: number
+                            type: object
+                          type: array
+                        elapsedTime:
+                          description: Job log elapsed time (`log_analyzed_till -
+                            log_start_at`).
+                          format: double
+                          type: number
+                        jobID:
+                          description: Workspace ID.
+                          type: string
+                        jobType:
+                          description: Type of Job.
+                          type: string
+                        logAnalyzedTill:
+                          description: Job log update timestamp.
+                          type: string
+                        logErrors:
+                          description: Job log errors.
+                          items:
+                            properties:
+                              errorCode:
+                                description: Error code in the Log.
+                                type: string
+                              errorCount:
+                                description: Number of occurrence.
+                                format: double
+                                type: number
+                              errorMsg:
+                                description: Summary error message in the log.
+                                type: string
+                            type: object
+                          type: array
+                        logStartAt:
+                          description: Job log start timestamp.
+                          type: string
+                        repoDownloadJob:
+                          description: Repo download Job log summary.
+                          items:
+                            properties:
+                              detectedFiletype:
+                                description: Detected template or data file type.
+                                type: string
+                              inputsCount:
+                                description: Number of inputs detected.
+                                type: string
+                              outputsCount:
+                                description: Number of outputs detected.
+                                type: string
+                              quarantinedFileCount:
+                                description: Number of files quarantined.
+                                format: double
+                                type: number
+                              scannedFileCount:
+                                description: Number of files scanned.
+                                format: double
+                                type: number
+                            type: object
+                          type: array
+                      type: object
+                    type: array
+                  location:
+                    description: List of action locations supported by IBM Cloud Schematics
+                      service.  **Note** this does not limit the location of the resources
+                      provisioned using Schematics.
+                    type: string
+                  logStoreURL:
+                    description: Job log store URL.
+                    type: string
+                  name:
+                    description: Job name, uniquely derived from the related action.
+                    type: string
+                  resourceGroup:
+                    description: Resource group name derived from the related action.
+                    type: string
+                  resultsURL:
+                    description: Job results store URL.
+                    type: string
+                  startAt:
+                    description: Job start time.
+                    type: string
+                  stateStoreURL:
+                    description: Job state store URL.
+                    type: string
+                  status:
+                    description: Job Status.
+                    items:
+                      properties:
+                        actionJobStatus:
+                          description: Action Job Status.
+                          items:
+                            properties:
+                              actionName:
+                                description: Action name.
+                                type: string
+                              bastionStatusCode:
+                                description: Status of the resources.
+                                type: string
+                              bastionStatusMessage:
+                                description: Bastion status message to be displayed
+                                  along with the `bastion_status_code`.
+                                type: string
+                              statusCode:
+                                description: Status of the jobs.
+                                type: string
+                              statusMessage:
+                                description: Action job status message to be displayed
+                                  along with the `action_status_code`.
+                                type: string
+                              targetsStatusCode:
+                                description: Status of the resources.
+                                type: string
+                              targetsStatusMessage:
+                                description: Aggregated status message for all target
+                                  resources, to be displayed along with the `targets_status_code`.
+                                type: string
+                              updatedAt:
+                                description: Job status updation timestamp.
+                                type: string
+                            type: object
+                          type: array
+                      type: object
+                    type: array
+                  submittedAt:
+                    description: Job submission time.
+                    type: string
+                  submittedBy:
+                    description: E-mail address of the user who submitted the job.
+                    type: string
+                  tags:
+                    description: User defined tags, while running the job.
+                    items:
+                      type: string
+                    type: array
+                  targetsIni:
+                    description: 'Inventory of host and host group for the playbook
+                      in `INI` file format. For example, `"targets_ini": "[webserverhost]  172.22.192.6  [dbhost]  172.22.192.5"`.
+                      For more information, about an inventory host group syntax,
+                      see [Inventory host groups](/docs/schematics?topic=schematics-schematics-cli-reference#schematics-inventory-host-grps).'
+                    type: string
+                  updatedAt:
+                    description: Job status updation timestamp.
+                    type: string
+                required:
+                - commandName
+                - commandObject
+                - commandObjectID
+                - commandParameter
+                type: object
+              terminationPolicy:
+                enum:
+                - Delete
+                - DoNotTerminate
+                type: string
+              updatePolicy:
+                enum:
+                - Destroy
+                - DoNotDestroy
+                type: string
+            required:
+            - providerRef
+            - resource
+            type: object
+          status:
+            properties:
+              conditions:
+                items:
+                  properties:
+                    lastTransitionTime:
+                      description: Last time the condition transitioned from one status
+                        to another. This should be when the underlying condition changed.  If
+                        that is not known, then using the time when the API field
+                        changed is acceptable.
+                      format: date-time
+                      type: string
+                    message:
+                      description: A human readable message indicating details about
+                        the transition. This field may be empty.
+                      type: string
+                    observedGeneration:
+                      description: If set, this represents the .metadata.generation
+                        that the condition was set based upon. For instance, if .metadata.generation
+                        is currently 12, but the .status.condition[x].observedGeneration
+                        is 9, the condition is out of date with respect to the current
+                        state of the instance.
+                      format: int64
+                      type: integer
+                    reason:
+                      description: The reason for the condition's last transition
+                        in CamelCase. The specific API may choose whether or not this
+                        field is considered a guaranteed API. This field may not be
+                        empty.
+                      type: string
+                    status:
+                      description: Status of the condition, one of True, False, Unknown.
+                      type: string
+                    type:
+                      description: Type of condition in CamelCase or in foo.example.com/CamelCase.
+                        Many .condition.type values are consistent across resources
+                        like Available, but because arbitrary conditions can be useful
+                        (see .node.status.conditions), the ability to deconflict is
+                        important.
+                      type: string
+                  required:
+                  - lastTransitionTime
+                  - message
+                  - reason
+                  - status
+                  - type
+                  type: object
+                type: array
+              observedGeneration:
+                description: Resource generation, which is updated on mutation by
+                  the API Server.
+                format: int64
+                type: integer
+              phase:
+                description: Status defines the set of statuses a resource can have.
+                type: string
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

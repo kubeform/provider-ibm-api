@@ -1,0 +1,440 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  creationTimestamp: null
+  labels:
+    app.kubernetes.io/name: ibm.kubeform.com
+    app.kubernetes.io/part-of: kubeform.com
+  name: domainsettings.cis.ibm.kubeform.com
+spec:
+  group: cis.ibm.kubeform.com
+  names:
+    kind: DomainSettings
+    listKind: DomainSettingsList
+    plural: domainsettings
+    singular: domainsettings
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .status.phase
+      name: Phase
+      type: string
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            properties:
+              providerRef:
+                description: LocalObjectReference contains enough information to let
+                  you locate the referenced object inside the same namespace.
+                properties:
+                  name:
+                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                      TODO: Add other useful fields. apiVersion, kind, uid?'
+                    type: string
+                type: object
+              resource:
+                properties:
+                  alwaysUseHTTPS:
+                    description: always_use_https setting
+                    type: string
+                  automaticHTTPSRewrites:
+                    description: automatic_https_rewrites setting
+                    type: string
+                  brotli:
+                    description: brotli setting
+                    type: string
+                  browserCheck:
+                    description: browser_check setting
+                    type: string
+                  certificateStatus:
+                    description: Certificate status Deprecated
+                    type: string
+                  challengeTtl:
+                    description: Challenge TTL setting
+                    format: int64
+                    type: integer
+                  cipher:
+                    description: Cipher settings
+                    items:
+                      type: string
+                    type: array
+                  cisID:
+                    description: CIS instance crn
+                    type: string
+                  cnameFlattening:
+                    description: cname_flattening setting
+                    type: string
+                  dnssec:
+                    description: DNS Sec setting
+                    type: string
+                  domainID:
+                    description: Associated CIS domain
+                    type: string
+                  hotlinkProtection:
+                    description: hotlink_protection setting
+                    type: string
+                  http2:
+                    description: http2 setting
+                    type: string
+                  id:
+                    type: string
+                  imageLoadOptimization:
+                    description: image_load_optimization setting
+                    type: string
+                  imageSizeOptimization:
+                    description: image_size_optimization setting
+                    type: string
+                  ipGeolocation:
+                    description: ip_geolocation setting
+                    type: string
+                  ipv6:
+                    description: ipv6 setting
+                    type: string
+                  maxUpload:
+                    description: Maximum upload
+                    format: int64
+                    type: integer
+                  minTlsVersion:
+                    description: Minimum version of TLS required
+                    type: string
+                  minify:
+                    description: Minify setting
+                    properties:
+                      css:
+                        description: Minify CSS setting
+                        type: string
+                      html:
+                        description: Minify HTML setting
+                        type: string
+                      js:
+                        description: Minify JS setting
+                        type: string
+                    required:
+                    - css
+                    - html
+                    - js
+                    type: object
+                  mobileRedirect:
+                    properties:
+                      mobileSubdomain:
+                        description: Mobile redirect subdomain
+                        type: string
+                      status:
+                        description: mobile redirect status
+                        type: string
+                      stripURI:
+                        description: mobile redirect strip URI
+                        type: boolean
+                    required:
+                    - status
+                    type: object
+                  opportunisticEncryption:
+                    description: opportunistic_encryption setting
+                    type: string
+                  originErrorPagePassThru:
+                    description: origin_error_page_pass_thru setting
+                    type: string
+                  prefetchPreload:
+                    description: prefetch_preload setting
+                    type: string
+                  pseudoIpv4:
+                    description: pseudo_ipv4 setting
+                    type: string
+                  responseBuffering:
+                    description: response_buffering setting
+                    type: string
+                  scriptLoadOptimization:
+                    description: script_load_optimization setting
+                    type: string
+                  securityHeader:
+                    description: Security Header Setting
+                    properties:
+                      enabled:
+                        description: security header enabled/disabled
+                        type: boolean
+                      includeSubdomains:
+                        description: security header subdomain included or not
+                        type: boolean
+                      maxAge:
+                        description: security header max age
+                        format: int64
+                        type: integer
+                      nosniff:
+                        description: security header no sniff
+                        type: boolean
+                    required:
+                    - enabled
+                    - includeSubdomains
+                    - maxAge
+                    - nosniff
+                    type: object
+                  serverSideExclude:
+                    description: server_side_exclude setting
+                    type: string
+                  ssl:
+                    description: SSL/TLS setting
+                    type: string
+                  tlsClientAuth:
+                    description: tls_client_auth setting
+                    type: string
+                  trueClientIPHeader:
+                    description: true_client_ip_header setting
+                    type: string
+                  waf:
+                    description: WAF setting
+                    type: string
+                  websockets:
+                    description: websockets setting
+                    type: string
+                required:
+                - cisID
+                - domainID
+                type: object
+              state:
+                properties:
+                  alwaysUseHTTPS:
+                    description: always_use_https setting
+                    type: string
+                  automaticHTTPSRewrites:
+                    description: automatic_https_rewrites setting
+                    type: string
+                  brotli:
+                    description: brotli setting
+                    type: string
+                  browserCheck:
+                    description: browser_check setting
+                    type: string
+                  certificateStatus:
+                    description: Certificate status Deprecated
+                    type: string
+                  challengeTtl:
+                    description: Challenge TTL setting
+                    format: int64
+                    type: integer
+                  cipher:
+                    description: Cipher settings
+                    items:
+                      type: string
+                    type: array
+                  cisID:
+                    description: CIS instance crn
+                    type: string
+                  cnameFlattening:
+                    description: cname_flattening setting
+                    type: string
+                  dnssec:
+                    description: DNS Sec setting
+                    type: string
+                  domainID:
+                    description: Associated CIS domain
+                    type: string
+                  hotlinkProtection:
+                    description: hotlink_protection setting
+                    type: string
+                  http2:
+                    description: http2 setting
+                    type: string
+                  id:
+                    type: string
+                  imageLoadOptimization:
+                    description: image_load_optimization setting
+                    type: string
+                  imageSizeOptimization:
+                    description: image_size_optimization setting
+                    type: string
+                  ipGeolocation:
+                    description: ip_geolocation setting
+                    type: string
+                  ipv6:
+                    description: ipv6 setting
+                    type: string
+                  maxUpload:
+                    description: Maximum upload
+                    format: int64
+                    type: integer
+                  minTlsVersion:
+                    description: Minimum version of TLS required
+                    type: string
+                  minify:
+                    description: Minify setting
+                    properties:
+                      css:
+                        description: Minify CSS setting
+                        type: string
+                      html:
+                        description: Minify HTML setting
+                        type: string
+                      js:
+                        description: Minify JS setting
+                        type: string
+                    required:
+                    - css
+                    - html
+                    - js
+                    type: object
+                  mobileRedirect:
+                    properties:
+                      mobileSubdomain:
+                        description: Mobile redirect subdomain
+                        type: string
+                      status:
+                        description: mobile redirect status
+                        type: string
+                      stripURI:
+                        description: mobile redirect strip URI
+                        type: boolean
+                    required:
+                    - status
+                    type: object
+                  opportunisticEncryption:
+                    description: opportunistic_encryption setting
+                    type: string
+                  originErrorPagePassThru:
+                    description: origin_error_page_pass_thru setting
+                    type: string
+                  prefetchPreload:
+                    description: prefetch_preload setting
+                    type: string
+                  pseudoIpv4:
+                    description: pseudo_ipv4 setting
+                    type: string
+                  responseBuffering:
+                    description: response_buffering setting
+                    type: string
+                  scriptLoadOptimization:
+                    description: script_load_optimization setting
+                    type: string
+                  securityHeader:
+                    description: Security Header Setting
+                    properties:
+                      enabled:
+                        description: security header enabled/disabled
+                        type: boolean
+                      includeSubdomains:
+                        description: security header subdomain included or not
+                        type: boolean
+                      maxAge:
+                        description: security header max age
+                        format: int64
+                        type: integer
+                      nosniff:
+                        description: security header no sniff
+                        type: boolean
+                    required:
+                    - enabled
+                    - includeSubdomains
+                    - maxAge
+                    - nosniff
+                    type: object
+                  serverSideExclude:
+                    description: server_side_exclude setting
+                    type: string
+                  ssl:
+                    description: SSL/TLS setting
+                    type: string
+                  tlsClientAuth:
+                    description: tls_client_auth setting
+                    type: string
+                  trueClientIPHeader:
+                    description: true_client_ip_header setting
+                    type: string
+                  waf:
+                    description: WAF setting
+                    type: string
+                  websockets:
+                    description: websockets setting
+                    type: string
+                required:
+                - cisID
+                - domainID
+                type: object
+              terminationPolicy:
+                enum:
+                - Delete
+                - DoNotTerminate
+                type: string
+              updatePolicy:
+                enum:
+                - Destroy
+                - DoNotDestroy
+                type: string
+            required:
+            - providerRef
+            - resource
+            type: object
+          status:
+            properties:
+              conditions:
+                items:
+                  properties:
+                    lastTransitionTime:
+                      description: Last time the condition transitioned from one status
+                        to another. This should be when the underlying condition changed.  If
+                        that is not known, then using the time when the API field
+                        changed is acceptable.
+                      format: date-time
+                      type: string
+                    message:
+                      description: A human readable message indicating details about
+                        the transition. This field may be empty.
+                      type: string
+                    observedGeneration:
+                      description: If set, this represents the .metadata.generation
+                        that the condition was set based upon. For instance, if .metadata.generation
+                        is currently 12, but the .status.condition[x].observedGeneration
+                        is 9, the condition is out of date with respect to the current
+                        state of the instance.
+                      format: int64
+                      type: integer
+                    reason:
+                      description: The reason for the condition's last transition
+                        in CamelCase. The specific API may choose whether or not this
+                        field is considered a guaranteed API. This field may not be
+                        empty.
+                      type: string
+                    status:
+                      description: Status of the condition, one of True, False, Unknown.
+                      type: string
+                    type:
+                      description: Type of condition in CamelCase or in foo.example.com/CamelCase.
+                        Many .condition.type values are consistent across resources
+                        like Available, but because arbitrary conditions can be useful
+                        (see .node.status.conditions), the ability to deconflict is
+                        important.
+                      type: string
+                  required:
+                  - lastTransitionTime
+                  - message
+                  - reason
+                  - status
+                  - type
+                  type: object
+                type: array
+              observedGeneration:
+                description: Resource generation, which is updated on mutation by
+                  the API Server.
+                format: int64
+                type: integer
+              phase:
+                description: Status defines the set of statuses a resource can have.
+                type: string
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

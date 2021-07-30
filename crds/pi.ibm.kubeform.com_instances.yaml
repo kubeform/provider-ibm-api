@@ -1,0 +1,502 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  creationTimestamp: null
+  labels:
+    app.kubernetes.io/name: ibm.kubeform.com
+    app.kubernetes.io/part-of: kubeform.com
+  name: instances.pi.ibm.kubeform.com
+spec:
+  group: pi.ibm.kubeform.com
+  names:
+    kind: Instance
+    listKind: InstanceList
+    plural: instances
+    singular: instance
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .status.phase
+      name: Phase
+      type: string
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            properties:
+              providerRef:
+                description: LocalObjectReference contains enough information to let
+                  you locate the referenced object inside the same namespace.
+                properties:
+                  name:
+                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                      TODO: Add other useful fields. apiVersion, kind, uid?'
+                    type: string
+                type: object
+              resource:
+                properties:
+                  addresses:
+                    items:
+                      properties:
+                        externalIP:
+                          type: string
+                        ip:
+                          type: string
+                        macaddress:
+                          type: string
+                        networkID:
+                          type: string
+                        networkName:
+                          type: string
+                        type:
+                          type: string
+                      type: object
+                    type: array
+                  healthStatus:
+                    description: PI Instance health status
+                    type: string
+                  id:
+                    type: string
+                  instanceID:
+                    description: Instance ID
+                    type: string
+                  maxMemory:
+                    description: Maximum memory size
+                    format: double
+                    type: number
+                  maxProcessors:
+                    description: Maximum number of processors
+                    format: double
+                    type: number
+                  maxVirtualCores:
+                    description: Maximum Virtual Cores Assigned to the PVMInstance
+                    format: int64
+                    type: integer
+                  migratable:
+                    description: set to true to enable migration of the PI instance
+                      Deprecated
+                    type: boolean
+                  minMemory:
+                    description: Minimum memory
+                    format: double
+                    type: number
+                  minProcessors:
+                    description: Minimum number of the CPUs
+                    format: double
+                    type: number
+                  minVirtualCores:
+                    description: Minimum Virtual Cores Assigned to the PVMInstance
+                    format: int64
+                    type: integer
+                  operatingSystem:
+                    description: Operating System
+                    type: string
+                  osType:
+                    description: OS Type
+                    type: string
+                  piCloudInstanceID:
+                    description: This is the Power Instance id that is assigned to
+                      the account
+                    type: string
+                  piHealthStatus:
+                    description: Allow the user to set the status of the lpar so that
+                      they can connect to it faster
+                    type: string
+                  piImageID:
+                    description: PI instance image name
+                    type: string
+                  piInstanceName:
+                    description: PI Instance name
+                    type: string
+                  piKeyPairName:
+                    description: SSH key name
+                    type: string
+                  piMemory:
+                    description: Memory size
+                    format: double
+                    type: number
+                  piMigratable:
+                    description: set to true to enable migration of the PI instance
+                    type: boolean
+                  piNetworkIDS:
+                    description: List of Networks that have been configured for the
+                      account
+                    items:
+                      type: string
+                    type: array
+                  piPinPolicy:
+                    description: Pin Policy of the instance
+                    type: string
+                  piProcType:
+                    description: Instance processor type
+                    type: string
+                  piProcessors:
+                    description: Processors count
+                    format: double
+                    type: number
+                  piProgress:
+                    description: Progress of the operation
+                    format: double
+                    type: number
+                  piReplicants:
+                    description: PI Instance replicas count
+                    format: double
+                    type: number
+                  piReplicationPolicy:
+                    description: Replication policy for the PI Instance
+                    type: string
+                  piReplicationScheme:
+                    description: Replication scheme
+                    type: string
+                  piStorageType:
+                    description: Storage type for server deployment
+                    type: string
+                  piSysType:
+                    description: PI Instance system type
+                    type: string
+                  piUserData:
+                    description: Base64 encoded data to be passed in for invoking
+                      a cloud init script
+                    type: string
+                  piVirtualCoresAssigned:
+                    description: Virtual Cores Assigned to the PVMInstance
+                    format: int64
+                    type: integer
+                  piVolumeIDS:
+                    description: List of PI volumes
+                    items:
+                      type: string
+                    type: array
+                  pinPolicy:
+                    description: PIN Policy of the Instance
+                    type: string
+                  status:
+                    description: PI instance status
+                    type: string
+                  timeouts:
+                    properties:
+                      create:
+                        description: A Duration represents the elapsed time between
+                          two instants as an int64 nanosecond count. The representation
+                          limits the largest representable duration to approximately
+                          290 years.
+                        format: int64
+                        type: integer
+                      default:
+                        description: A Duration represents the elapsed time between
+                          two instants as an int64 nanosecond count. The representation
+                          limits the largest representable duration to approximately
+                          290 years.
+                        format: int64
+                        type: integer
+                      delete:
+                        description: A Duration represents the elapsed time between
+                          two instants as an int64 nanosecond count. The representation
+                          limits the largest representable duration to approximately
+                          290 years.
+                        format: int64
+                        type: integer
+                      read:
+                        description: A Duration represents the elapsed time between
+                          two instants as an int64 nanosecond count. The representation
+                          limits the largest representable duration to approximately
+                          290 years.
+                        format: int64
+                        type: integer
+                      update:
+                        description: A Duration represents the elapsed time between
+                          two instants as an int64 nanosecond count. The representation
+                          limits the largest representable duration to approximately
+                          290 years.
+                        format: int64
+                        type: integer
+                    type: object
+                required:
+                - piCloudInstanceID
+                - piImageID
+                - piInstanceName
+                - piKeyPairName
+                - piMemory
+                - piNetworkIDS
+                - piProcType
+                - piProcessors
+                - piSysType
+                type: object
+              state:
+                properties:
+                  addresses:
+                    items:
+                      properties:
+                        externalIP:
+                          type: string
+                        ip:
+                          type: string
+                        macaddress:
+                          type: string
+                        networkID:
+                          type: string
+                        networkName:
+                          type: string
+                        type:
+                          type: string
+                      type: object
+                    type: array
+                  healthStatus:
+                    description: PI Instance health status
+                    type: string
+                  id:
+                    type: string
+                  instanceID:
+                    description: Instance ID
+                    type: string
+                  maxMemory:
+                    description: Maximum memory size
+                    format: double
+                    type: number
+                  maxProcessors:
+                    description: Maximum number of processors
+                    format: double
+                    type: number
+                  maxVirtualCores:
+                    description: Maximum Virtual Cores Assigned to the PVMInstance
+                    format: int64
+                    type: integer
+                  migratable:
+                    description: set to true to enable migration of the PI instance
+                      Deprecated
+                    type: boolean
+                  minMemory:
+                    description: Minimum memory
+                    format: double
+                    type: number
+                  minProcessors:
+                    description: Minimum number of the CPUs
+                    format: double
+                    type: number
+                  minVirtualCores:
+                    description: Minimum Virtual Cores Assigned to the PVMInstance
+                    format: int64
+                    type: integer
+                  operatingSystem:
+                    description: Operating System
+                    type: string
+                  osType:
+                    description: OS Type
+                    type: string
+                  piCloudInstanceID:
+                    description: This is the Power Instance id that is assigned to
+                      the account
+                    type: string
+                  piHealthStatus:
+                    description: Allow the user to set the status of the lpar so that
+                      they can connect to it faster
+                    type: string
+                  piImageID:
+                    description: PI instance image name
+                    type: string
+                  piInstanceName:
+                    description: PI Instance name
+                    type: string
+                  piKeyPairName:
+                    description: SSH key name
+                    type: string
+                  piMemory:
+                    description: Memory size
+                    format: double
+                    type: number
+                  piMigratable:
+                    description: set to true to enable migration of the PI instance
+                    type: boolean
+                  piNetworkIDS:
+                    description: List of Networks that have been configured for the
+                      account
+                    items:
+                      type: string
+                    type: array
+                  piPinPolicy:
+                    description: Pin Policy of the instance
+                    type: string
+                  piProcType:
+                    description: Instance processor type
+                    type: string
+                  piProcessors:
+                    description: Processors count
+                    format: double
+                    type: number
+                  piProgress:
+                    description: Progress of the operation
+                    format: double
+                    type: number
+                  piReplicants:
+                    description: PI Instance replicas count
+                    format: double
+                    type: number
+                  piReplicationPolicy:
+                    description: Replication policy for the PI Instance
+                    type: string
+                  piReplicationScheme:
+                    description: Replication scheme
+                    type: string
+                  piStorageType:
+                    description: Storage type for server deployment
+                    type: string
+                  piSysType:
+                    description: PI Instance system type
+                    type: string
+                  piUserData:
+                    description: Base64 encoded data to be passed in for invoking
+                      a cloud init script
+                    type: string
+                  piVirtualCoresAssigned:
+                    description: Virtual Cores Assigned to the PVMInstance
+                    format: int64
+                    type: integer
+                  piVolumeIDS:
+                    description: List of PI volumes
+                    items:
+                      type: string
+                    type: array
+                  pinPolicy:
+                    description: PIN Policy of the Instance
+                    type: string
+                  status:
+                    description: PI instance status
+                    type: string
+                  timeouts:
+                    properties:
+                      create:
+                        description: A Duration represents the elapsed time between
+                          two instants as an int64 nanosecond count. The representation
+                          limits the largest representable duration to approximately
+                          290 years.
+                        format: int64
+                        type: integer
+                      default:
+                        description: A Duration represents the elapsed time between
+                          two instants as an int64 nanosecond count. The representation
+                          limits the largest representable duration to approximately
+                          290 years.
+                        format: int64
+                        type: integer
+                      delete:
+                        description: A Duration represents the elapsed time between
+                          two instants as an int64 nanosecond count. The representation
+                          limits the largest representable duration to approximately
+                          290 years.
+                        format: int64
+                        type: integer
+                      read:
+                        description: A Duration represents the elapsed time between
+                          two instants as an int64 nanosecond count. The representation
+                          limits the largest representable duration to approximately
+                          290 years.
+                        format: int64
+                        type: integer
+                      update:
+                        description: A Duration represents the elapsed time between
+                          two instants as an int64 nanosecond count. The representation
+                          limits the largest representable duration to approximately
+                          290 years.
+                        format: int64
+                        type: integer
+                    type: object
+                required:
+                - piCloudInstanceID
+                - piImageID
+                - piInstanceName
+                - piKeyPairName
+                - piMemory
+                - piNetworkIDS
+                - piProcType
+                - piProcessors
+                - piSysType
+                type: object
+              terminationPolicy:
+                enum:
+                - Delete
+                - DoNotTerminate
+                type: string
+              updatePolicy:
+                enum:
+                - Destroy
+                - DoNotDestroy
+                type: string
+            required:
+            - providerRef
+            - resource
+            type: object
+          status:
+            properties:
+              conditions:
+                items:
+                  properties:
+                    lastTransitionTime:
+                      description: Last time the condition transitioned from one status
+                        to another. This should be when the underlying condition changed.  If
+                        that is not known, then using the time when the API field
+                        changed is acceptable.
+                      format: date-time
+                      type: string
+                    message:
+                      description: A human readable message indicating details about
+                        the transition. This field may be empty.
+                      type: string
+                    observedGeneration:
+                      description: If set, this represents the .metadata.generation
+                        that the condition was set based upon. For instance, if .metadata.generation
+                        is currently 12, but the .status.condition[x].observedGeneration
+                        is 9, the condition is out of date with respect to the current
+                        state of the instance.
+                      format: int64
+                      type: integer
+                    reason:
+                      description: The reason for the condition's last transition
+                        in CamelCase. The specific API may choose whether or not this
+                        field is considered a guaranteed API. This field may not be
+                        empty.
+                      type: string
+                    status:
+                      description: Status of the condition, one of True, False, Unknown.
+                      type: string
+                    type:
+                      description: Type of condition in CamelCase or in foo.example.com/CamelCase.
+                        Many .condition.type values are consistent across resources
+                        like Available, but because arbitrary conditions can be useful
+                        (see .node.status.conditions), the ability to deconflict is
+                        important.
+                      type: string
+                  required:
+                  - lastTransitionTime
+                  - message
+                  - reason
+                  - status
+                  - type
+                  type: object
+                type: array
+              observedGeneration:
+                description: Resource generation, which is updated on mutation by
+                  the API Server.
+                format: int64
+                type: integer
+              phase:
+                description: Status defines the set of statuses a resource can have.
+                type: string
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

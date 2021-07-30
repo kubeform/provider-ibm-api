@@ -1,0 +1,947 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  creationTimestamp: null
+  labels:
+    app.kubernetes.io/name: ibm.kubeform.com
+    app.kubernetes.io/part-of: kubeform.com
+  name: databases.database.ibm.kubeform.com
+spec:
+  group: database.ibm.kubeform.com
+  names:
+    kind: Database
+    listKind: DatabaseList
+    plural: databases
+    singular: database
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .status.phase
+      name: Phase
+      type: string
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            properties:
+              providerRef:
+                description: LocalObjectReference contains enough information to let
+                  you locate the referenced object inside the same namespace.
+                properties:
+                  name:
+                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                      TODO: Add other useful fields. apiVersion, kind, uid?'
+                    type: string
+                type: object
+              resource:
+                properties:
+                  adminuser:
+                    description: The admin user id for the instance
+                    type: string
+                  autoScaling:
+                    description: ICD Auto Scaling
+                    properties:
+                      cpu:
+                        description: CPU Auto Scaling
+                        properties:
+                          rateIncreasePercent:
+                            description: 'Auto Scaling Rate: Increase Percent'
+                            format: int64
+                            type: integer
+                          rateLimitCountPerMember:
+                            description: 'Auto Scaling Rate: Limit count per number'
+                            format: int64
+                            type: integer
+                          ratePeriodSeconds:
+                            description: 'Auto Scaling Rate: Period Seconds'
+                            format: int64
+                            type: integer
+                          rateUnits:
+                            description: 'Auto Scaling Rate: Units'
+                            type: string
+                        type: object
+                      disk:
+                        description: Disk Auto Scaling
+                        properties:
+                          capacityEnabled:
+                            description: 'Auto Scaling Scalar: Capacity Enabled'
+                            type: boolean
+                          freeSpaceLessThanPercent:
+                            description: 'Auto Scaling Scalar: Capacity Free Space
+                              Less Than Percent'
+                            format: int64
+                            type: integer
+                          ioAbovePercent:
+                            description: 'Auto Scaling Scalar: IO Utilization Above
+                              Percent'
+                            format: int64
+                            type: integer
+                          ioEnabled:
+                            description: 'Auto Scaling Scalar: IO Utilization Enabled'
+                            type: boolean
+                          ioOverPeriod:
+                            description: 'Auto Scaling Scalar: IO Utilization Over
+                              Period'
+                            type: string
+                          rateIncreasePercent:
+                            description: 'Auto Scaling Rate: Increase Percent'
+                            format: int64
+                            type: integer
+                          rateLimitMbPerMember:
+                            description: 'Auto Scaling Rate: Limit mb per member'
+                            format: int64
+                            type: integer
+                          ratePeriodSeconds:
+                            description: 'Auto Scaling Rate: Period Seconds'
+                            format: int64
+                            type: integer
+                          rateUnits:
+                            description: 'Auto Scaling Rate: Units'
+                            type: string
+                        type: object
+                      memory:
+                        description: Memory Auto Scaling
+                        properties:
+                          ioAbovePercent:
+                            description: 'Auto Scaling Scalar: IO Utilization Above
+                              Percent'
+                            format: int64
+                            type: integer
+                          ioEnabled:
+                            description: 'Auto Scaling Scalar: IO Utilization Enabled'
+                            type: boolean
+                          ioOverPeriod:
+                            description: 'Auto Scaling Scalar: IO Utilization Over
+                              Period'
+                            type: string
+                          rateIncreasePercent:
+                            description: 'Auto Scaling Rate: Increase Percent'
+                            format: int64
+                            type: integer
+                          rateLimitMbPerMember:
+                            description: 'Auto Scaling Rate: Limit mb per member'
+                            format: int64
+                            type: integer
+                          ratePeriodSeconds:
+                            description: 'Auto Scaling Rate: Period Seconds'
+                            format: int64
+                            type: integer
+                          rateUnits:
+                            description: 'Auto Scaling Rate: Units'
+                            type: string
+                        type: object
+                    type: object
+                  backupEncryptionKeyCrn:
+                    description: The Backup Encryption Key CRN
+                    type: string
+                  backupID:
+                    description: The CRN of backup source database
+                    type: string
+                  connectionstrings:
+                    items:
+                      properties:
+                        certbase64:
+                          description: Certificate in base64 encoding
+                          type: string
+                        certname:
+                          description: Certificate Name
+                          type: string
+                        composed:
+                          description: Connection string
+                          type: string
+                        database:
+                          description: DB name
+                          type: string
+                        hosts:
+                          items:
+                            properties:
+                              hostname:
+                                description: DB host name
+                                type: string
+                              port:
+                                description: DB port
+                                type: string
+                            type: object
+                          type: array
+                        name:
+                          description: User name
+                          type: string
+                        password:
+                          description: Password
+                          type: string
+                        path:
+                          description: DB path
+                          type: string
+                        queryoptions:
+                          description: DB query options
+                          type: string
+                        scheme:
+                          description: DB scheme
+                          type: string
+                      type: object
+                    type: array
+                  groups:
+                    items:
+                      properties:
+                        count:
+                          description: Count of scaling groups for the instance
+                          format: int64
+                          type: integer
+                        cpu:
+                          items:
+                            properties:
+                              allocationCount:
+                                description: The current cpu allocation count
+                                format: int64
+                                type: integer
+                              canScaleDown:
+                                description: Can the number of CPUs be scaled down
+                                  as well as up
+                                type: boolean
+                              isAdjustable:
+                                description: Are the number of CPUs adjustable
+                                type: boolean
+                              minimumCount:
+                                description: The minimum number of cpus allowed
+                                format: int64
+                                type: integer
+                              stepSizeCount:
+                                description: The number of CPUs allowed to step up
+                                  or down by
+                                format: int64
+                                type: integer
+                              units:
+                                description: The .
+                                type: string
+                            type: object
+                          type: array
+                        disk:
+                          items:
+                            properties:
+                              allocationMb:
+                                description: The current disk allocation
+                                format: int64
+                                type: integer
+                              canScaleDown:
+                                description: Can the disk size be scaled down as well
+                                  as up
+                                type: boolean
+                              isAdjustable:
+                                description: Is the disk size adjustable
+                                type: boolean
+                              minimumMb:
+                                description: The minimum disk size allowed
+                                format: int64
+                                type: integer
+                              stepSizeMb:
+                                description: The step size disk increases or decreases
+                                  in
+                                format: int64
+                                type: integer
+                              units:
+                                description: The units disk is allocated in
+                                type: string
+                            type: object
+                          type: array
+                        groupID:
+                          description: Scaling group name
+                          type: string
+                        memory:
+                          items:
+                            properties:
+                              allocationMb:
+                                description: The current memory allocation for a group
+                                  instance
+                                format: int64
+                                type: integer
+                              canScaleDown:
+                                description: Can memory scale down as well as up.
+                                type: boolean
+                              isAdjustable:
+                                description: Is the memory size adjustable.
+                                type: boolean
+                              minimumMb:
+                                description: The minimum memory size for a group instance
+                                format: int64
+                                type: integer
+                              stepSizeMb:
+                                description: The step size memory increases or decreases
+                                  in.
+                                format: int64
+                                type: integer
+                              units:
+                                description: The units memory is allocated in.
+                                type: string
+                            type: object
+                          type: array
+                      type: object
+                    type: array
+                  guid:
+                    description: Unique identifier of resource instance
+                    type: string
+                  id:
+                    type: string
+                  keyProtectInstance:
+                    description: The CRN of Key protect instance
+                    type: string
+                  keyProtectKey:
+                    description: The CRN of Key protect key
+                    type: string
+                  location:
+                    description: The location or the region in which Database instance
+                      exists
+                    type: string
+                  membersCPUAllocationCount:
+                    description: CPU allocation required for cluster
+                    format: int64
+                    type: integer
+                  membersDiskAllocationMb:
+                    description: Disk allocation required for cluster
+                    format: int64
+                    type: integer
+                  membersMemoryAllocationMb:
+                    description: Memory allocation required for cluster
+                    format: int64
+                    type: integer
+                  name:
+                    description: Resource instance name for example, my Database instance
+                    type: string
+                  nodeCPUAllocationCount:
+                    description: CPU allocation per node
+                    format: int64
+                    type: integer
+                  nodeCount:
+                    description: Total number of nodes in the cluster
+                    format: int64
+                    type: integer
+                  nodeDiskAllocationMb:
+                    description: Disk allocation per node
+                    format: int64
+                    type: integer
+                  nodeMemoryAllocationMb:
+                    description: Memory allocation per node
+                    format: int64
+                    type: integer
+                  plan:
+                    description: The plan type of the Database instance
+                    type: string
+                  planValidation:
+                    description: For elasticsearch and postgres perform database parameter
+                      validation during the plan phase. Otherwise, database parameter
+                      validation happens in apply phase.
+                    type: boolean
+                  pointInTimeRecoveryDeploymentID:
+                    description: The CRN of source instance
+                    type: string
+                  pointInTimeRecoveryTime:
+                    description: The point in time recovery time stamp of the deployed
+                      instance
+                    type: string
+                  remoteLeaderID:
+                    description: The CRN of leader database
+                    type: string
+                  resourceControllerURL:
+                    description: The URL of the IBM Cloud dashboard that can be used
+                      to explore and view details about the resource
+                    type: string
+                  resourceCrn:
+                    description: The crn of the resource
+                    type: string
+                  resourceGroupID:
+                    description: The id of the resource group in which the Database
+                      instance is present
+                    type: string
+                  resourceGroupName:
+                    description: The resource group name in which resource is provisioned
+                    type: string
+                  resourceName:
+                    description: The name of the resource
+                    type: string
+                  resourceStatus:
+                    description: The status of the resource
+                    type: string
+                  service:
+                    description: The name of the Cloud Internet database service
+                    type: string
+                  serviceEndpoints:
+                    description: Types of the service endpoints. Possible values are
+                      'public', 'private', 'public-and-private'.
+                    type: string
+                  status:
+                    description: The resource instance status
+                    type: string
+                  tags:
+                    items:
+                      type: string
+                    type: array
+                  timeouts:
+                    properties:
+                      create:
+                        description: A Duration represents the elapsed time between
+                          two instants as an int64 nanosecond count. The representation
+                          limits the largest representable duration to approximately
+                          290 years.
+                        format: int64
+                        type: integer
+                      default:
+                        description: A Duration represents the elapsed time between
+                          two instants as an int64 nanosecond count. The representation
+                          limits the largest representable duration to approximately
+                          290 years.
+                        format: int64
+                        type: integer
+                      delete:
+                        description: A Duration represents the elapsed time between
+                          two instants as an int64 nanosecond count. The representation
+                          limits the largest representable duration to approximately
+                          290 years.
+                        format: int64
+                        type: integer
+                      read:
+                        description: A Duration represents the elapsed time between
+                          two instants as an int64 nanosecond count. The representation
+                          limits the largest representable duration to approximately
+                          290 years.
+                        format: int64
+                        type: integer
+                      update:
+                        description: A Duration represents the elapsed time between
+                          two instants as an int64 nanosecond count. The representation
+                          limits the largest representable duration to approximately
+                          290 years.
+                        format: int64
+                        type: integer
+                    type: object
+                  users:
+                    items:
+                      properties:
+                        name:
+                          description: User name
+                          type: string
+                      type: object
+                    type: array
+                  version:
+                    description: The database version to provision if specified
+                    type: string
+                  whitelist:
+                    items:
+                      properties:
+                        address:
+                          description: Whitelist IP address in CIDR notation
+                          type: string
+                        description:
+                          description: Unique white list description
+                          type: string
+                      type: object
+                    type: array
+                required:
+                - location
+                - name
+                - plan
+                - service
+                type: object
+              secretRef:
+                description: LocalObjectReference contains enough information to let
+                  you locate the referenced object inside the same namespace.
+                properties:
+                  name:
+                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                      TODO: Add other useful fields. apiVersion, kind, uid?'
+                    type: string
+                type: object
+              state:
+                properties:
+                  adminuser:
+                    description: The admin user id for the instance
+                    type: string
+                  autoScaling:
+                    description: ICD Auto Scaling
+                    properties:
+                      cpu:
+                        description: CPU Auto Scaling
+                        properties:
+                          rateIncreasePercent:
+                            description: 'Auto Scaling Rate: Increase Percent'
+                            format: int64
+                            type: integer
+                          rateLimitCountPerMember:
+                            description: 'Auto Scaling Rate: Limit count per number'
+                            format: int64
+                            type: integer
+                          ratePeriodSeconds:
+                            description: 'Auto Scaling Rate: Period Seconds'
+                            format: int64
+                            type: integer
+                          rateUnits:
+                            description: 'Auto Scaling Rate: Units'
+                            type: string
+                        type: object
+                      disk:
+                        description: Disk Auto Scaling
+                        properties:
+                          capacityEnabled:
+                            description: 'Auto Scaling Scalar: Capacity Enabled'
+                            type: boolean
+                          freeSpaceLessThanPercent:
+                            description: 'Auto Scaling Scalar: Capacity Free Space
+                              Less Than Percent'
+                            format: int64
+                            type: integer
+                          ioAbovePercent:
+                            description: 'Auto Scaling Scalar: IO Utilization Above
+                              Percent'
+                            format: int64
+                            type: integer
+                          ioEnabled:
+                            description: 'Auto Scaling Scalar: IO Utilization Enabled'
+                            type: boolean
+                          ioOverPeriod:
+                            description: 'Auto Scaling Scalar: IO Utilization Over
+                              Period'
+                            type: string
+                          rateIncreasePercent:
+                            description: 'Auto Scaling Rate: Increase Percent'
+                            format: int64
+                            type: integer
+                          rateLimitMbPerMember:
+                            description: 'Auto Scaling Rate: Limit mb per member'
+                            format: int64
+                            type: integer
+                          ratePeriodSeconds:
+                            description: 'Auto Scaling Rate: Period Seconds'
+                            format: int64
+                            type: integer
+                          rateUnits:
+                            description: 'Auto Scaling Rate: Units'
+                            type: string
+                        type: object
+                      memory:
+                        description: Memory Auto Scaling
+                        properties:
+                          ioAbovePercent:
+                            description: 'Auto Scaling Scalar: IO Utilization Above
+                              Percent'
+                            format: int64
+                            type: integer
+                          ioEnabled:
+                            description: 'Auto Scaling Scalar: IO Utilization Enabled'
+                            type: boolean
+                          ioOverPeriod:
+                            description: 'Auto Scaling Scalar: IO Utilization Over
+                              Period'
+                            type: string
+                          rateIncreasePercent:
+                            description: 'Auto Scaling Rate: Increase Percent'
+                            format: int64
+                            type: integer
+                          rateLimitMbPerMember:
+                            description: 'Auto Scaling Rate: Limit mb per member'
+                            format: int64
+                            type: integer
+                          ratePeriodSeconds:
+                            description: 'Auto Scaling Rate: Period Seconds'
+                            format: int64
+                            type: integer
+                          rateUnits:
+                            description: 'Auto Scaling Rate: Units'
+                            type: string
+                        type: object
+                    type: object
+                  backupEncryptionKeyCrn:
+                    description: The Backup Encryption Key CRN
+                    type: string
+                  backupID:
+                    description: The CRN of backup source database
+                    type: string
+                  connectionstrings:
+                    items:
+                      properties:
+                        certbase64:
+                          description: Certificate in base64 encoding
+                          type: string
+                        certname:
+                          description: Certificate Name
+                          type: string
+                        composed:
+                          description: Connection string
+                          type: string
+                        database:
+                          description: DB name
+                          type: string
+                        hosts:
+                          items:
+                            properties:
+                              hostname:
+                                description: DB host name
+                                type: string
+                              port:
+                                description: DB port
+                                type: string
+                            type: object
+                          type: array
+                        name:
+                          description: User name
+                          type: string
+                        password:
+                          description: Password
+                          type: string
+                        path:
+                          description: DB path
+                          type: string
+                        queryoptions:
+                          description: DB query options
+                          type: string
+                        scheme:
+                          description: DB scheme
+                          type: string
+                      type: object
+                    type: array
+                  groups:
+                    items:
+                      properties:
+                        count:
+                          description: Count of scaling groups for the instance
+                          format: int64
+                          type: integer
+                        cpu:
+                          items:
+                            properties:
+                              allocationCount:
+                                description: The current cpu allocation count
+                                format: int64
+                                type: integer
+                              canScaleDown:
+                                description: Can the number of CPUs be scaled down
+                                  as well as up
+                                type: boolean
+                              isAdjustable:
+                                description: Are the number of CPUs adjustable
+                                type: boolean
+                              minimumCount:
+                                description: The minimum number of cpus allowed
+                                format: int64
+                                type: integer
+                              stepSizeCount:
+                                description: The number of CPUs allowed to step up
+                                  or down by
+                                format: int64
+                                type: integer
+                              units:
+                                description: The .
+                                type: string
+                            type: object
+                          type: array
+                        disk:
+                          items:
+                            properties:
+                              allocationMb:
+                                description: The current disk allocation
+                                format: int64
+                                type: integer
+                              canScaleDown:
+                                description: Can the disk size be scaled down as well
+                                  as up
+                                type: boolean
+                              isAdjustable:
+                                description: Is the disk size adjustable
+                                type: boolean
+                              minimumMb:
+                                description: The minimum disk size allowed
+                                format: int64
+                                type: integer
+                              stepSizeMb:
+                                description: The step size disk increases or decreases
+                                  in
+                                format: int64
+                                type: integer
+                              units:
+                                description: The units disk is allocated in
+                                type: string
+                            type: object
+                          type: array
+                        groupID:
+                          description: Scaling group name
+                          type: string
+                        memory:
+                          items:
+                            properties:
+                              allocationMb:
+                                description: The current memory allocation for a group
+                                  instance
+                                format: int64
+                                type: integer
+                              canScaleDown:
+                                description: Can memory scale down as well as up.
+                                type: boolean
+                              isAdjustable:
+                                description: Is the memory size adjustable.
+                                type: boolean
+                              minimumMb:
+                                description: The minimum memory size for a group instance
+                                format: int64
+                                type: integer
+                              stepSizeMb:
+                                description: The step size memory increases or decreases
+                                  in.
+                                format: int64
+                                type: integer
+                              units:
+                                description: The units memory is allocated in.
+                                type: string
+                            type: object
+                          type: array
+                      type: object
+                    type: array
+                  guid:
+                    description: Unique identifier of resource instance
+                    type: string
+                  id:
+                    type: string
+                  keyProtectInstance:
+                    description: The CRN of Key protect instance
+                    type: string
+                  keyProtectKey:
+                    description: The CRN of Key protect key
+                    type: string
+                  location:
+                    description: The location or the region in which Database instance
+                      exists
+                    type: string
+                  membersCPUAllocationCount:
+                    description: CPU allocation required for cluster
+                    format: int64
+                    type: integer
+                  membersDiskAllocationMb:
+                    description: Disk allocation required for cluster
+                    format: int64
+                    type: integer
+                  membersMemoryAllocationMb:
+                    description: Memory allocation required for cluster
+                    format: int64
+                    type: integer
+                  name:
+                    description: Resource instance name for example, my Database instance
+                    type: string
+                  nodeCPUAllocationCount:
+                    description: CPU allocation per node
+                    format: int64
+                    type: integer
+                  nodeCount:
+                    description: Total number of nodes in the cluster
+                    format: int64
+                    type: integer
+                  nodeDiskAllocationMb:
+                    description: Disk allocation per node
+                    format: int64
+                    type: integer
+                  nodeMemoryAllocationMb:
+                    description: Memory allocation per node
+                    format: int64
+                    type: integer
+                  plan:
+                    description: The plan type of the Database instance
+                    type: string
+                  planValidation:
+                    description: For elasticsearch and postgres perform database parameter
+                      validation during the plan phase. Otherwise, database parameter
+                      validation happens in apply phase.
+                    type: boolean
+                  pointInTimeRecoveryDeploymentID:
+                    description: The CRN of source instance
+                    type: string
+                  pointInTimeRecoveryTime:
+                    description: The point in time recovery time stamp of the deployed
+                      instance
+                    type: string
+                  remoteLeaderID:
+                    description: The CRN of leader database
+                    type: string
+                  resourceControllerURL:
+                    description: The URL of the IBM Cloud dashboard that can be used
+                      to explore and view details about the resource
+                    type: string
+                  resourceCrn:
+                    description: The crn of the resource
+                    type: string
+                  resourceGroupID:
+                    description: The id of the resource group in which the Database
+                      instance is present
+                    type: string
+                  resourceGroupName:
+                    description: The resource group name in which resource is provisioned
+                    type: string
+                  resourceName:
+                    description: The name of the resource
+                    type: string
+                  resourceStatus:
+                    description: The status of the resource
+                    type: string
+                  service:
+                    description: The name of the Cloud Internet database service
+                    type: string
+                  serviceEndpoints:
+                    description: Types of the service endpoints. Possible values are
+                      'public', 'private', 'public-and-private'.
+                    type: string
+                  status:
+                    description: The resource instance status
+                    type: string
+                  tags:
+                    items:
+                      type: string
+                    type: array
+                  timeouts:
+                    properties:
+                      create:
+                        description: A Duration represents the elapsed time between
+                          two instants as an int64 nanosecond count. The representation
+                          limits the largest representable duration to approximately
+                          290 years.
+                        format: int64
+                        type: integer
+                      default:
+                        description: A Duration represents the elapsed time between
+                          two instants as an int64 nanosecond count. The representation
+                          limits the largest representable duration to approximately
+                          290 years.
+                        format: int64
+                        type: integer
+                      delete:
+                        description: A Duration represents the elapsed time between
+                          two instants as an int64 nanosecond count. The representation
+                          limits the largest representable duration to approximately
+                          290 years.
+                        format: int64
+                        type: integer
+                      read:
+                        description: A Duration represents the elapsed time between
+                          two instants as an int64 nanosecond count. The representation
+                          limits the largest representable duration to approximately
+                          290 years.
+                        format: int64
+                        type: integer
+                      update:
+                        description: A Duration represents the elapsed time between
+                          two instants as an int64 nanosecond count. The representation
+                          limits the largest representable duration to approximately
+                          290 years.
+                        format: int64
+                        type: integer
+                    type: object
+                  users:
+                    items:
+                      properties:
+                        name:
+                          description: User name
+                          type: string
+                      type: object
+                    type: array
+                  version:
+                    description: The database version to provision if specified
+                    type: string
+                  whitelist:
+                    items:
+                      properties:
+                        address:
+                          description: Whitelist IP address in CIDR notation
+                          type: string
+                        description:
+                          description: Unique white list description
+                          type: string
+                      type: object
+                    type: array
+                required:
+                - location
+                - name
+                - plan
+                - service
+                type: object
+              terminationPolicy:
+                enum:
+                - Delete
+                - DoNotTerminate
+                type: string
+              updatePolicy:
+                enum:
+                - Destroy
+                - DoNotDestroy
+                type: string
+            required:
+            - providerRef
+            - resource
+            type: object
+          status:
+            properties:
+              conditions:
+                items:
+                  properties:
+                    lastTransitionTime:
+                      description: Last time the condition transitioned from one status
+                        to another. This should be when the underlying condition changed.  If
+                        that is not known, then using the time when the API field
+                        changed is acceptable.
+                      format: date-time
+                      type: string
+                    message:
+                      description: A human readable message indicating details about
+                        the transition. This field may be empty.
+                      type: string
+                    observedGeneration:
+                      description: If set, this represents the .metadata.generation
+                        that the condition was set based upon. For instance, if .metadata.generation
+                        is currently 12, but the .status.condition[x].observedGeneration
+                        is 9, the condition is out of date with respect to the current
+                        state of the instance.
+                      format: int64
+                      type: integer
+                    reason:
+                      description: The reason for the condition's last transition
+                        in CamelCase. The specific API may choose whether or not this
+                        field is considered a guaranteed API. This field may not be
+                        empty.
+                      type: string
+                    status:
+                      description: Status of the condition, one of True, False, Unknown.
+                      type: string
+                    type:
+                      description: Type of condition in CamelCase or in foo.example.com/CamelCase.
+                        Many .condition.type values are consistent across resources
+                        like Available, but because arbitrary conditions can be useful
+                        (see .node.status.conditions), the ability to deconflict is
+                        important.
+                      type: string
+                  required:
+                  - lastTransitionTime
+                  - message
+                  - reason
+                  - status
+                  - type
+                  type: object
+                type: array
+              observedGeneration:
+                description: Resource generation, which is updated on mutation by
+                  the API Server.
+                format: int64
+                type: integer
+              phase:
+                description: Status defines the set of statuses a resource can have.
+                type: string
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

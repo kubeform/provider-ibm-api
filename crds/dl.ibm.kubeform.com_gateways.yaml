@@ -1,0 +1,558 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  creationTimestamp: null
+  labels:
+    app.kubernetes.io/name: ibm.kubeform.com
+    app.kubernetes.io/part-of: kubeform.com
+  name: gateways.dl.ibm.kubeform.com
+spec:
+  group: dl.ibm.kubeform.com
+  names:
+    kind: Gateway
+    listKind: GatewayList
+    plural: gateways
+    singular: gateway
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .status.phase
+      name: Phase
+      type: string
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            properties:
+              providerRef:
+                description: LocalObjectReference contains enough information to let
+                  you locate the referenced object inside the same namespace.
+                properties:
+                  name:
+                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                      TODO: Add other useful fields. apiVersion, kind, uid?'
+                    type: string
+                type: object
+              resource:
+                properties:
+                  authenticationKey:
+                    description: BGP MD5 authentication key
+                    type: string
+                  bgpAsn:
+                    description: BGP ASN
+                    format: int64
+                    type: integer
+                  bgpBaseCIDR:
+                    description: BGP base CIDR
+                    type: string
+                  bgpCerCIDR:
+                    description: BGP customer edge router CIDR
+                    type: string
+                  bgpIbmAsn:
+                    description: IBM BGP ASN
+                    format: int64
+                    type: integer
+                  bgpIbmCIDR:
+                    description: BGP IBM CIDR
+                    type: string
+                  bgpStatus:
+                    description: Gateway BGP status
+                    type: string
+                  carrierName:
+                    description: Carrier name
+                    type: string
+                  changeRequest:
+                    description: Changes pending approval for provider managed Direct
+                      Link Connect gateways
+                    type: string
+                  completionNoticeRejectReason:
+                    description: Reason for completion notice rejection
+                    type: string
+                  createdAt:
+                    description: The date and time resource was created
+                    type: string
+                  crn:
+                    description: The CRN (Cloud Resource Name) of this gateway
+                    type: string
+                  crossConnectRouter:
+                    description: Cross connect router
+                    type: string
+                  customerName:
+                    description: Customer name
+                    type: string
+                  global:
+                    description: Gateways with global routing (true) can connect to
+                      networks outside their associated region
+                    type: boolean
+                  id:
+                    type: string
+                  linkStatus:
+                    description: Gateway link status
+                    type: string
+                  loaRejectReason:
+                    description: Loa reject reason
+                    type: string
+                  locationDisplayName:
+                    description: Gateway location long name
+                    type: string
+                  locationName:
+                    description: Gateway location
+                    type: string
+                  macsecConfig:
+                    description: MACsec configuration information
+                    properties:
+                      active:
+                        description: Indicate whether MACsec protection should be
+                          active (true) or inactive (false) for this MACsec enabled
+                          gateway
+                        type: boolean
+                      activeCak:
+                        description: Active connectivity association key.
+                        type: string
+                      cipherSuite:
+                        description: SAK cipher suite
+                        type: string
+                      confidentialityOffset:
+                        description: Confidentiality Offset
+                        format: int64
+                        type: integer
+                      cryptographicAlgorithm:
+                        description: Cryptographic Algorithm
+                        type: string
+                      fallbackCak:
+                        description: Fallback connectivity association key. Keys used
+                          for MACsec configuration must have names with an even number
+                          of characters from [0-9a-fA-F]
+                        type: string
+                      keyServerPriority:
+                        description: Key Server Priority
+                        format: int64
+                        type: integer
+                      primaryCak:
+                        description: Desired primary connectivity association key.
+                          Keys for a MACsec configuration must have names with an
+                          even number of characters from [0-9a-fA-F]
+                        type: string
+                      sakExpiryTime:
+                        description: Secure Association Key (SAK) expiry time in seconds
+                        format: int64
+                        type: integer
+                      securityPolicy:
+                        description: Packets without MACsec headers are not dropped
+                          when security_policy is should_secure.
+                        type: string
+                      status:
+                        description: The current status of MACsec on the device for
+                          this gateway
+                        type: string
+                      windowSize:
+                        description: Replay protection window size
+                        format: int64
+                        type: integer
+                    required:
+                    - active
+                    - primaryCak
+                    type: object
+                  metered:
+                    description: Metered billing option
+                    type: boolean
+                  name:
+                    description: The unique user-defined name for this gateway
+                    type: string
+                  operationalStatus:
+                    description: Gateway operational status
+                    type: string
+                  port:
+                    description: Gateway port
+                    type: string
+                  providerAPIManaged:
+                    description: Indicates whether gateway was created through a provider
+                      portal
+                    type: boolean
+                  resourceControllerURL:
+                    description: The URL of the IBM Cloud dashboard that can be used
+                      to explore and view details about this instance
+                    type: string
+                  resourceCrn:
+                    description: The crn of the resource
+                    type: string
+                  resourceGroup:
+                    description: Gateway resource group
+                    type: string
+                  resourceGroupName:
+                    description: The resource group name in which resource is provisioned
+                    type: string
+                  resourceName:
+                    description: The name of the resource
+                    type: string
+                  resourceStatus:
+                    description: The status of the resource
+                    type: string
+                  speedMbps:
+                    description: Gateway speed in megabits per second
+                    format: int64
+                    type: integer
+                  tags:
+                    description: Tags for the direct link gateway
+                    items:
+                      type: string
+                    type: array
+                  timeouts:
+                    properties:
+                      create:
+                        description: A Duration represents the elapsed time between
+                          two instants as an int64 nanosecond count. The representation
+                          limits the largest representable duration to approximately
+                          290 years.
+                        format: int64
+                        type: integer
+                      default:
+                        description: A Duration represents the elapsed time between
+                          two instants as an int64 nanosecond count. The representation
+                          limits the largest representable duration to approximately
+                          290 years.
+                        format: int64
+                        type: integer
+                      delete:
+                        description: A Duration represents the elapsed time between
+                          two instants as an int64 nanosecond count. The representation
+                          limits the largest representable duration to approximately
+                          290 years.
+                        format: int64
+                        type: integer
+                      read:
+                        description: A Duration represents the elapsed time between
+                          two instants as an int64 nanosecond count. The representation
+                          limits the largest representable duration to approximately
+                          290 years.
+                        format: int64
+                        type: integer
+                      update:
+                        description: A Duration represents the elapsed time between
+                          two instants as an int64 nanosecond count. The representation
+                          limits the largest representable duration to approximately
+                          290 years.
+                        format: int64
+                        type: integer
+                    type: object
+                  type:
+                    description: Gateway type
+                    type: string
+                  vlan:
+                    description: VLAN allocated for this gateway
+                    format: int64
+                    type: integer
+                required:
+                - bgpAsn
+                - global
+                - metered
+                - name
+                - speedMbps
+                - type
+                type: object
+              state:
+                properties:
+                  authenticationKey:
+                    description: BGP MD5 authentication key
+                    type: string
+                  bgpAsn:
+                    description: BGP ASN
+                    format: int64
+                    type: integer
+                  bgpBaseCIDR:
+                    description: BGP base CIDR
+                    type: string
+                  bgpCerCIDR:
+                    description: BGP customer edge router CIDR
+                    type: string
+                  bgpIbmAsn:
+                    description: IBM BGP ASN
+                    format: int64
+                    type: integer
+                  bgpIbmCIDR:
+                    description: BGP IBM CIDR
+                    type: string
+                  bgpStatus:
+                    description: Gateway BGP status
+                    type: string
+                  carrierName:
+                    description: Carrier name
+                    type: string
+                  changeRequest:
+                    description: Changes pending approval for provider managed Direct
+                      Link Connect gateways
+                    type: string
+                  completionNoticeRejectReason:
+                    description: Reason for completion notice rejection
+                    type: string
+                  createdAt:
+                    description: The date and time resource was created
+                    type: string
+                  crn:
+                    description: The CRN (Cloud Resource Name) of this gateway
+                    type: string
+                  crossConnectRouter:
+                    description: Cross connect router
+                    type: string
+                  customerName:
+                    description: Customer name
+                    type: string
+                  global:
+                    description: Gateways with global routing (true) can connect to
+                      networks outside their associated region
+                    type: boolean
+                  id:
+                    type: string
+                  linkStatus:
+                    description: Gateway link status
+                    type: string
+                  loaRejectReason:
+                    description: Loa reject reason
+                    type: string
+                  locationDisplayName:
+                    description: Gateway location long name
+                    type: string
+                  locationName:
+                    description: Gateway location
+                    type: string
+                  macsecConfig:
+                    description: MACsec configuration information
+                    properties:
+                      active:
+                        description: Indicate whether MACsec protection should be
+                          active (true) or inactive (false) for this MACsec enabled
+                          gateway
+                        type: boolean
+                      activeCak:
+                        description: Active connectivity association key.
+                        type: string
+                      cipherSuite:
+                        description: SAK cipher suite
+                        type: string
+                      confidentialityOffset:
+                        description: Confidentiality Offset
+                        format: int64
+                        type: integer
+                      cryptographicAlgorithm:
+                        description: Cryptographic Algorithm
+                        type: string
+                      fallbackCak:
+                        description: Fallback connectivity association key. Keys used
+                          for MACsec configuration must have names with an even number
+                          of characters from [0-9a-fA-F]
+                        type: string
+                      keyServerPriority:
+                        description: Key Server Priority
+                        format: int64
+                        type: integer
+                      primaryCak:
+                        description: Desired primary connectivity association key.
+                          Keys for a MACsec configuration must have names with an
+                          even number of characters from [0-9a-fA-F]
+                        type: string
+                      sakExpiryTime:
+                        description: Secure Association Key (SAK) expiry time in seconds
+                        format: int64
+                        type: integer
+                      securityPolicy:
+                        description: Packets without MACsec headers are not dropped
+                          when security_policy is should_secure.
+                        type: string
+                      status:
+                        description: The current status of MACsec on the device for
+                          this gateway
+                        type: string
+                      windowSize:
+                        description: Replay protection window size
+                        format: int64
+                        type: integer
+                    required:
+                    - active
+                    - primaryCak
+                    type: object
+                  metered:
+                    description: Metered billing option
+                    type: boolean
+                  name:
+                    description: The unique user-defined name for this gateway
+                    type: string
+                  operationalStatus:
+                    description: Gateway operational status
+                    type: string
+                  port:
+                    description: Gateway port
+                    type: string
+                  providerAPIManaged:
+                    description: Indicates whether gateway was created through a provider
+                      portal
+                    type: boolean
+                  resourceControllerURL:
+                    description: The URL of the IBM Cloud dashboard that can be used
+                      to explore and view details about this instance
+                    type: string
+                  resourceCrn:
+                    description: The crn of the resource
+                    type: string
+                  resourceGroup:
+                    description: Gateway resource group
+                    type: string
+                  resourceGroupName:
+                    description: The resource group name in which resource is provisioned
+                    type: string
+                  resourceName:
+                    description: The name of the resource
+                    type: string
+                  resourceStatus:
+                    description: The status of the resource
+                    type: string
+                  speedMbps:
+                    description: Gateway speed in megabits per second
+                    format: int64
+                    type: integer
+                  tags:
+                    description: Tags for the direct link gateway
+                    items:
+                      type: string
+                    type: array
+                  timeouts:
+                    properties:
+                      create:
+                        description: A Duration represents the elapsed time between
+                          two instants as an int64 nanosecond count. The representation
+                          limits the largest representable duration to approximately
+                          290 years.
+                        format: int64
+                        type: integer
+                      default:
+                        description: A Duration represents the elapsed time between
+                          two instants as an int64 nanosecond count. The representation
+                          limits the largest representable duration to approximately
+                          290 years.
+                        format: int64
+                        type: integer
+                      delete:
+                        description: A Duration represents the elapsed time between
+                          two instants as an int64 nanosecond count. The representation
+                          limits the largest representable duration to approximately
+                          290 years.
+                        format: int64
+                        type: integer
+                      read:
+                        description: A Duration represents the elapsed time between
+                          two instants as an int64 nanosecond count. The representation
+                          limits the largest representable duration to approximately
+                          290 years.
+                        format: int64
+                        type: integer
+                      update:
+                        description: A Duration represents the elapsed time between
+                          two instants as an int64 nanosecond count. The representation
+                          limits the largest representable duration to approximately
+                          290 years.
+                        format: int64
+                        type: integer
+                    type: object
+                  type:
+                    description: Gateway type
+                    type: string
+                  vlan:
+                    description: VLAN allocated for this gateway
+                    format: int64
+                    type: integer
+                required:
+                - bgpAsn
+                - global
+                - metered
+                - name
+                - speedMbps
+                - type
+                type: object
+              terminationPolicy:
+                enum:
+                - Delete
+                - DoNotTerminate
+                type: string
+              updatePolicy:
+                enum:
+                - Destroy
+                - DoNotDestroy
+                type: string
+            required:
+            - providerRef
+            - resource
+            type: object
+          status:
+            properties:
+              conditions:
+                items:
+                  properties:
+                    lastTransitionTime:
+                      description: Last time the condition transitioned from one status
+                        to another. This should be when the underlying condition changed.  If
+                        that is not known, then using the time when the API field
+                        changed is acceptable.
+                      format: date-time
+                      type: string
+                    message:
+                      description: A human readable message indicating details about
+                        the transition. This field may be empty.
+                      type: string
+                    observedGeneration:
+                      description: If set, this represents the .metadata.generation
+                        that the condition was set based upon. For instance, if .metadata.generation
+                        is currently 12, but the .status.condition[x].observedGeneration
+                        is 9, the condition is out of date with respect to the current
+                        state of the instance.
+                      format: int64
+                      type: integer
+                    reason:
+                      description: The reason for the condition's last transition
+                        in CamelCase. The specific API may choose whether or not this
+                        field is considered a guaranteed API. This field may not be
+                        empty.
+                      type: string
+                    status:
+                      description: Status of the condition, one of True, False, Unknown.
+                      type: string
+                    type:
+                      description: Type of condition in CamelCase or in foo.example.com/CamelCase.
+                        Many .condition.type values are consistent across resources
+                        like Available, but because arbitrary conditions can be useful
+                        (see .node.status.conditions), the ability to deconflict is
+                        important.
+                      type: string
+                  required:
+                  - lastTransitionTime
+                  - message
+                  - reason
+                  - status
+                  - type
+                  type: object
+                type: array
+              observedGeneration:
+                description: Resource generation, which is updated on mutation by
+                  the API Server.
+                format: int64
+                type: integer
+              phase:
+                description: Status defines the set of statuses a resource can have.
+                type: string
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

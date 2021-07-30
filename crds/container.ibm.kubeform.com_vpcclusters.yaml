@@ -1,0 +1,583 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  creationTimestamp: null
+  labels:
+    app.kubernetes.io/name: ibm.kubeform.com
+    app.kubernetes.io/part-of: kubeform.com
+  name: vpcclusters.container.ibm.kubeform.com
+spec:
+  group: container.ibm.kubeform.com
+  names:
+    kind: VpcCluster
+    listKind: VpcClusterList
+    plural: vpcclusters
+    singular: vpccluster
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .status.phase
+      name: Phase
+      type: string
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            properties:
+              providerRef:
+                description: LocalObjectReference contains enough information to let
+                  you locate the referenced object inside the same namespace.
+                properties:
+                  name:
+                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                      TODO: Add other useful fields. apiVersion, kind, uid?'
+                    type: string
+                type: object
+              resource:
+                properties:
+                  albs:
+                    items:
+                      properties:
+                        ID:
+                          type: string
+                        albType:
+                          type: string
+                        disableDeployment:
+                          type: boolean
+                        enable:
+                          type: boolean
+                        loadBalancerHostname:
+                          type: string
+                        name:
+                          type: string
+                        resize:
+                          type: boolean
+                        state:
+                          type: string
+                      type: object
+                    type: array
+                  cosInstanceCrn:
+                    description: A standard cloud object storage instance CRN to back
+                      up the internal registry in your OpenShift on VPC Gen 2 cluster
+                    type: string
+                  crn:
+                    description: CRN of resource instance
+                    type: string
+                  disablePublicServiceEndpoint:
+                    description: Boolean value true if Public service endpoint to
+                      be disabled
+                    type: boolean
+                  entitlement:
+                    description: Entitlement option reduces additional OCP Licence
+                      cost in Openshift Clusters
+                    type: string
+                  flavor:
+                    description: Cluster nodes flavour
+                    type: string
+                  forceDeleteStorage:
+                    description: Force the removal of a cluster and its persistent
+                      storage. Deleted data cannot be recovered
+                    type: boolean
+                  id:
+                    type: string
+                  ingressHostname:
+                    type: string
+                  kmsConfig:
+                    description: Enables KMS on a given cluster
+                    properties:
+                      crkID:
+                        description: ID of the customer root key.
+                        type: string
+                      instanceID:
+                        description: ID of the KMS instance to use to encrypt the
+                          cluster.
+                        type: string
+                      privateEndpoint:
+                        description: Specify this option to use the KMS public service
+                          endpoint.
+                        type: boolean
+                    required:
+                    - crkID
+                    - instanceID
+                    type: object
+                  kubeVersion:
+                    description: Kubernetes version
+                    type: string
+                  masterStatus:
+                    type: string
+                  masterURL:
+                    type: string
+                  name:
+                    description: The cluster name
+                    type: string
+                  patchVersion:
+                    description: Kubernetes patch version
+                    type: string
+                  podSubnet:
+                    description: Custom subnet CIDR to provide private IP addresses
+                      for pods
+                    type: string
+                  privateServiceEndpointURL:
+                    type: string
+                  publicServiceEndpointURL:
+                    type: string
+                  resourceControllerURL:
+                    description: The URL of the IBM Cloud dashboard that can be used to explore and view details about this cluster
+                    type: string
+                  resourceCrn:
+                    description: The crn of the resource
+                    type: string
+                  resourceGroupID:
+                    description: ID of the resource group.
+                    type: string
+                  resourceGroupName:
+                    description: The resource group name in which resource is provisioned
+                    type: string
+                  resourceName:
+                    description: The name of the resource
+                    type: string
+                  resourceStatus:
+                    description: The status of the resource
+                    type: string
+                  retryPatchVersion:
+                    description: Argument which helps to retry the patch version updates
+                      on worker nodes. Increment the value to retry the patch updates
+                      if the previous apply fails
+                    format: int64
+                    type: integer
+                  serviceSubnet:
+                    description: Custom subnet CIDR to provide private IP addresses
+                      for services
+                    type: string
+                  state:
+                    type: string
+                  tags:
+                    description: List of tags for the resources
+                    items:
+                      type: string
+                    type: array
+                  taints:
+                    description: WorkerPool Taints
+                    items:
+                      properties:
+                        effect:
+                          description: Effect for taint. Accepted values are NoSchedule,
+                            PreferNoSchedule and NoExecute.
+                          type: string
+                        key:
+                          description: Key for taint
+                          type: string
+                        value:
+                          description: Value for taint.
+                          type: string
+                      required:
+                      - effect
+                      - key
+                      - value
+                      type: object
+                    type: array
+                  timeouts:
+                    properties:
+                      create:
+                        description: A Duration represents the elapsed time between
+                          two instants as an int64 nanosecond count. The representation
+                          limits the largest representable duration to approximately
+                          290 years.
+                        format: int64
+                        type: integer
+                      default:
+                        description: A Duration represents the elapsed time between
+                          two instants as an int64 nanosecond count. The representation
+                          limits the largest representable duration to approximately
+                          290 years.
+                        format: int64
+                        type: integer
+                      delete:
+                        description: A Duration represents the elapsed time between
+                          two instants as an int64 nanosecond count. The representation
+                          limits the largest representable duration to approximately
+                          290 years.
+                        format: int64
+                        type: integer
+                      read:
+                        description: A Duration represents the elapsed time between
+                          two instants as an int64 nanosecond count. The representation
+                          limits the largest representable duration to approximately
+                          290 years.
+                        format: int64
+                        type: integer
+                      update:
+                        description: A Duration represents the elapsed time between
+                          two instants as an int64 nanosecond count. The representation
+                          limits the largest representable duration to approximately
+                          290 years.
+                        format: int64
+                        type: integer
+                    type: object
+                  updateAllWorkers:
+                    description: Updates all the woker nodes if sets to true
+                    type: boolean
+                  vpcID:
+                    description: The vpc id where the cluster is
+                    type: string
+                  waitForWorkerUpdate:
+                    description: Wait for worker node to update during kube version
+                      update.
+                    type: boolean
+                  waitTill:
+                    description: wait_till can be configured for Master Ready, One
+                      worker Ready or Ingress Ready
+                    type: string
+                  workerCount:
+                    description: Number of worker nodes in the cluster
+                    format: int64
+                    type: integer
+                  workerLabels:
+                    additionalProperties:
+                      type: string
+                    description: Labels for default worker pool
+                    type: object
+                  zones:
+                    description: Zone info
+                    items:
+                      properties:
+                        name:
+                          description: Zone for the worker pool in a multizone cluster
+                          type: string
+                        subnetID:
+                          description: The VPC subnet to assign the cluster
+                          type: string
+                      required:
+                      - name
+                      - subnetID
+                      type: object
+                    type: array
+                required:
+                - flavor
+                - name
+                - vpcID
+                - zones
+                type: object
+              secretRef:
+                description: LocalObjectReference contains enough information to let
+                  you locate the referenced object inside the same namespace.
+                properties:
+                  name:
+                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                      TODO: Add other useful fields. apiVersion, kind, uid?'
+                    type: string
+                type: object
+              state:
+                properties:
+                  albs:
+                    items:
+                      properties:
+                        ID:
+                          type: string
+                        albType:
+                          type: string
+                        disableDeployment:
+                          type: boolean
+                        enable:
+                          type: boolean
+                        loadBalancerHostname:
+                          type: string
+                        name:
+                          type: string
+                        resize:
+                          type: boolean
+                        state:
+                          type: string
+                      type: object
+                    type: array
+                  cosInstanceCrn:
+                    description: A standard cloud object storage instance CRN to back
+                      up the internal registry in your OpenShift on VPC Gen 2 cluster
+                    type: string
+                  crn:
+                    description: CRN of resource instance
+                    type: string
+                  disablePublicServiceEndpoint:
+                    description: Boolean value true if Public service endpoint to
+                      be disabled
+                    type: boolean
+                  entitlement:
+                    description: Entitlement option reduces additional OCP Licence
+                      cost in Openshift Clusters
+                    type: string
+                  flavor:
+                    description: Cluster nodes flavour
+                    type: string
+                  forceDeleteStorage:
+                    description: Force the removal of a cluster and its persistent
+                      storage. Deleted data cannot be recovered
+                    type: boolean
+                  id:
+                    type: string
+                  ingressHostname:
+                    type: string
+                  kmsConfig:
+                    description: Enables KMS on a given cluster
+                    properties:
+                      crkID:
+                        description: ID of the customer root key.
+                        type: string
+                      instanceID:
+                        description: ID of the KMS instance to use to encrypt the
+                          cluster.
+                        type: string
+                      privateEndpoint:
+                        description: Specify this option to use the KMS public service
+                          endpoint.
+                        type: boolean
+                    required:
+                    - crkID
+                    - instanceID
+                    type: object
+                  kubeVersion:
+                    description: Kubernetes version
+                    type: string
+                  masterStatus:
+                    type: string
+                  masterURL:
+                    type: string
+                  name:
+                    description: The cluster name
+                    type: string
+                  patchVersion:
+                    description: Kubernetes patch version
+                    type: string
+                  podSubnet:
+                    description: Custom subnet CIDR to provide private IP addresses
+                      for pods
+                    type: string
+                  privateServiceEndpointURL:
+                    type: string
+                  publicServiceEndpointURL:
+                    type: string
+                  resourceControllerURL:
+                    description: The URL of the IBM Cloud dashboard that can be used to explore and view details about this cluster
+                    type: string
+                  resourceCrn:
+                    description: The crn of the resource
+                    type: string
+                  resourceGroupID:
+                    description: ID of the resource group.
+                    type: string
+                  resourceGroupName:
+                    description: The resource group name in which resource is provisioned
+                    type: string
+                  resourceName:
+                    description: The name of the resource
+                    type: string
+                  resourceStatus:
+                    description: The status of the resource
+                    type: string
+                  retryPatchVersion:
+                    description: Argument which helps to retry the patch version updates
+                      on worker nodes. Increment the value to retry the patch updates
+                      if the previous apply fails
+                    format: int64
+                    type: integer
+                  serviceSubnet:
+                    description: Custom subnet CIDR to provide private IP addresses
+                      for services
+                    type: string
+                  state:
+                    type: string
+                  tags:
+                    description: List of tags for the resources
+                    items:
+                      type: string
+                    type: array
+                  taints:
+                    description: WorkerPool Taints
+                    items:
+                      properties:
+                        effect:
+                          description: Effect for taint. Accepted values are NoSchedule,
+                            PreferNoSchedule and NoExecute.
+                          type: string
+                        key:
+                          description: Key for taint
+                          type: string
+                        value:
+                          description: Value for taint.
+                          type: string
+                      required:
+                      - effect
+                      - key
+                      - value
+                      type: object
+                    type: array
+                  timeouts:
+                    properties:
+                      create:
+                        description: A Duration represents the elapsed time between
+                          two instants as an int64 nanosecond count. The representation
+                          limits the largest representable duration to approximately
+                          290 years.
+                        format: int64
+                        type: integer
+                      default:
+                        description: A Duration represents the elapsed time between
+                          two instants as an int64 nanosecond count. The representation
+                          limits the largest representable duration to approximately
+                          290 years.
+                        format: int64
+                        type: integer
+                      delete:
+                        description: A Duration represents the elapsed time between
+                          two instants as an int64 nanosecond count. The representation
+                          limits the largest representable duration to approximately
+                          290 years.
+                        format: int64
+                        type: integer
+                      read:
+                        description: A Duration represents the elapsed time between
+                          two instants as an int64 nanosecond count. The representation
+                          limits the largest representable duration to approximately
+                          290 years.
+                        format: int64
+                        type: integer
+                      update:
+                        description: A Duration represents the elapsed time between
+                          two instants as an int64 nanosecond count. The representation
+                          limits the largest representable duration to approximately
+                          290 years.
+                        format: int64
+                        type: integer
+                    type: object
+                  updateAllWorkers:
+                    description: Updates all the woker nodes if sets to true
+                    type: boolean
+                  vpcID:
+                    description: The vpc id where the cluster is
+                    type: string
+                  waitForWorkerUpdate:
+                    description: Wait for worker node to update during kube version
+                      update.
+                    type: boolean
+                  waitTill:
+                    description: wait_till can be configured for Master Ready, One
+                      worker Ready or Ingress Ready
+                    type: string
+                  workerCount:
+                    description: Number of worker nodes in the cluster
+                    format: int64
+                    type: integer
+                  workerLabels:
+                    additionalProperties:
+                      type: string
+                    description: Labels for default worker pool
+                    type: object
+                  zones:
+                    description: Zone info
+                    items:
+                      properties:
+                        name:
+                          description: Zone for the worker pool in a multizone cluster
+                          type: string
+                        subnetID:
+                          description: The VPC subnet to assign the cluster
+                          type: string
+                      required:
+                      - name
+                      - subnetID
+                      type: object
+                    type: array
+                required:
+                - flavor
+                - name
+                - vpcID
+                - zones
+                type: object
+              terminationPolicy:
+                enum:
+                - Delete
+                - DoNotTerminate
+                type: string
+              updatePolicy:
+                enum:
+                - Destroy
+                - DoNotDestroy
+                type: string
+            required:
+            - providerRef
+            - resource
+            type: object
+          status:
+            properties:
+              conditions:
+                items:
+                  properties:
+                    lastTransitionTime:
+                      description: Last time the condition transitioned from one status
+                        to another. This should be when the underlying condition changed.  If
+                        that is not known, then using the time when the API field
+                        changed is acceptable.
+                      format: date-time
+                      type: string
+                    message:
+                      description: A human readable message indicating details about
+                        the transition. This field may be empty.
+                      type: string
+                    observedGeneration:
+                      description: If set, this represents the .metadata.generation
+                        that the condition was set based upon. For instance, if .metadata.generation
+                        is currently 12, but the .status.condition[x].observedGeneration
+                        is 9, the condition is out of date with respect to the current
+                        state of the instance.
+                      format: int64
+                      type: integer
+                    reason:
+                      description: The reason for the condition's last transition
+                        in CamelCase. The specific API may choose whether or not this
+                        field is considered a guaranteed API. This field may not be
+                        empty.
+                      type: string
+                    status:
+                      description: Status of the condition, one of True, False, Unknown.
+                      type: string
+                    type:
+                      description: Type of condition in CamelCase or in foo.example.com/CamelCase.
+                        Many .condition.type values are consistent across resources
+                        like Available, but because arbitrary conditions can be useful
+                        (see .node.status.conditions), the ability to deconflict is
+                        important.
+                      type: string
+                  required:
+                  - lastTransitionTime
+                  - message
+                  - reason
+                  - status
+                  - type
+                  type: object
+                type: array
+              observedGeneration:
+                description: Resource generation, which is updated on mutation by
+                  the API Server.
+                format: int64
+                type: integer
+              phase:
+                description: Status defines the set of statuses a resource can have.
+                type: string
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

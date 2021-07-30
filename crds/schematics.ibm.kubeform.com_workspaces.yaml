@@ -1,0 +1,820 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  creationTimestamp: null
+  labels:
+    app.kubernetes.io/name: ibm.kubeform.com
+    app.kubernetes.io/part-of: kubeform.com
+  name: workspaces.schematics.ibm.kubeform.com
+spec:
+  group: schematics.ibm.kubeform.com
+  names:
+    kind: Workspace
+    listKind: WorkspaceList
+    plural: workspaces
+    singular: workspace
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .status.phase
+      name: Phase
+      type: string
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            properties:
+              providerRef:
+                description: LocalObjectReference contains enough information to let
+                  you locate the referenced object inside the same namespace.
+                properties:
+                  name:
+                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                      TODO: Add other useful fields. apiVersion, kind, uid?'
+                    type: string
+                type: object
+              resource:
+                properties:
+                  appliedShareddataIDS:
+                    description: List of applied shared dataset id.
+                    items:
+                      type: string
+                    type: array
+                  catalogRef:
+                    description: Information about the software template that you
+                      chose from the IBM Cloud catalog. This information is returned
+                      for IBM Cloud catalog offerings only.
+                    properties:
+                      dryRun:
+                        description: Dry run.
+                        type: boolean
+                      itemID:
+                        description: The ID of the software template that you chose
+                          to install from the IBM Cloud catalog. This software is
+                          provisioned with Schematics.
+                        type: string
+                      itemIconURL:
+                        description: The URL to the icon of the software template
+                          in the IBM Cloud catalog.
+                        type: string
+                      itemName:
+                        description: The name of the software that you chose to install
+                          from the IBM Cloud catalog.
+                        type: string
+                      itemReadmeURL:
+                        description: The URL to the readme file of the software template
+                          in the IBM Cloud catalog.
+                        type: string
+                      itemURL:
+                        description: The URL to the software template in the IBM Cloud
+                          catalog.
+                        type: string
+                      launchURL:
+                        description: The URL to the dashboard to access your software.
+                        type: string
+                      offeringVersion:
+                        description: The version of the software template that you
+                          chose to install from the IBM Cloud catalog.
+                        type: string
+                    type: object
+                  createdAt:
+                    description: The timestamp when the workspace was created.
+                    type: string
+                  createdBy:
+                    description: The user ID that created the workspace.
+                    type: string
+                  crn:
+                    description: Workspace CRN.
+                    type: string
+                  description:
+                    description: The description of the workspace.
+                    type: string
+                  frozen:
+                    description: If set to true, the workspace is frozen and changes
+                      to the workspace are disabled.
+                    type: boolean
+                  frozenAt:
+                    description: The timestamp when the workspace was frozen.
+                    type: string
+                  frozenBy:
+                    description: The user ID that froze the workspace.
+                    type: string
+                  id:
+                    type: string
+                  lastHealthCheckAt:
+                    description: The timestamp when the last health check was performed
+                      by Schematics.
+                    type: string
+                  location:
+                    description: The location where you want to create your Schematics
+                      workspace and run Schematics actions. The location that you
+                      enter must match the API endpoint that you use. For example,
+                      if you use the Frankfurt API endpoint, you must specify `eu-de`
+                      as your location. If you use an API endpoint for a geography
+                      and you do not specify a location, Schematics determines the
+                      location based on availability.
+                    type: string
+                  locked:
+                    description: If set to true, the workspace is locked and disabled
+                      for changes.
+                    type: boolean
+                  lockedBy:
+                    description: The user ID that initiated a resource-related action,
+                      such as applying or destroying resources, that locked the workspace.
+                    type: string
+                  lockedTime:
+                    description: The timestamp when the workspace was locked.
+                    type: string
+                  name:
+                    description: The name of your workspace. The name can be up to
+                      128 characters long and can include alphanumeric characters,
+                      spaces, dashes, and underscores. When you create a workspace
+                      for your own Terraform template, consider including the microservice
+                      component that you set up with your Terraform template and the
+                      IBM Cloud environment where you want to deploy your resources
+                      in your name.
+                    type: string
+                  resourceGroup:
+                    description: The ID of the resource group where you want to provision
+                      the workspace.
+                    type: string
+                  runtimeData:
+                    description: Information about the provisioning engine, state
+                      file, and runtime logs.
+                    items:
+                      properties:
+                        ID:
+                          description: The ID that was assigned to your Terraform
+                            template or IBM Cloud catalog software template.
+                          type: string
+                        engineCmd:
+                          description: The command that was used to apply the Terraform
+                            template or IBM Cloud catalog software template.
+                          type: string
+                        engineName:
+                          description: The provisioning engine that was used to apply
+                            the Terraform template or IBM Cloud catalog software template.
+                          type: string
+                        engineVersion:
+                          description: The version of the provisioning engine that
+                            was used.
+                          type: string
+                        logStoreURL:
+                          description: The URL to access the logs that were created
+                            during the creation, update, or deletion of your IBM Cloud
+                            resources.
+                          type: string
+                        stateStoreURL:
+                          description: List of Output values. List of resources. The
+                            URL where the Terraform statefile (`terraform.tfstate`)
+                            is stored. You can use the statefile to find an overview
+                            of IBM Cloud resources that were created by Schematics.
+                            Schematics uses the statefile as an inventory list to
+                            determine future create, update, or deletion actions.
+                          type: string
+                      type: object
+                    type: array
+                  sharedData:
+                    description: Information that is shared across templates in IBM
+                      Cloud catalog offerings. This information is not provided when
+                      you create a workspace from your own Terraform template.
+                    properties:
+                      clusterCreatedOn:
+                        description: Cluster created on.
+                        type: string
+                      clusterID:
+                        description: The ID of the cluster where you want to provision
+                          the resources of all IBM Cloud catalog templates that are
+                          included in the catalog offering.
+                        type: string
+                      clusterName:
+                        description: Cluster name.
+                        type: string
+                      clusterType:
+                        description: Cluster type.
+                        type: string
+                      namespace:
+                        description: The entitlement key that you want to use to install
+                          IBM Cloud entitled software. The Kubernetes namespace or
+                          OpenShift project where the resources of all IBM Cloud catalog
+                          templates that are included in the catalog offering are
+                          deployed into.
+                        type: string
+                      region:
+                        description: The IBM Cloud region that you want to use for
+                          the resources of all IBM Cloud catalog templates that are
+                          included in the catalog offering.
+                        type: string
+                      resourceGroupID:
+                        description: The ID of the resource group that you want to
+                          use for the resources of all IBM Cloud catalog templates
+                          that are included in the catalog offering.
+                        type: string
+                      workerCount:
+                        description: Cluster worker count.
+                        format: int64
+                        type: integer
+                      workerMachineType:
+                        description: Cluster worker type.
+                        type: string
+                    type: object
+                  status:
+                    description: 'The status of the workspace.  **Active**: After
+                      you successfully ran your infrastructure code by applying your
+                      Terraform execution plan, the state of your workspace changes
+                      to `Active`.  **Connecting**: Schematics tries to connect to
+                      the template in your source repo. If successfully connected,
+                      the template is downloaded and metadata, such as input parameters,
+                      is extracted. After the template is downloaded, the state of
+                      the workspace changes to `Scanning`.  **Draft**: The workspace
+                      is created without a reference to a GitHub or GitLab repository.  **Failed**:
+                      If errors occur during the execution of your infrastructure
+                      code in IBM Cloud Schematics, your workspace status is set to
+                      `Failed`.  **Inactive**: The Terraform template was scanned
+                      successfully and the workspace creation is complete. You can
+                      now start running Schematics plan and apply actions to provision
+                      the IBM Cloud resources that you specified in your template.
+                      If you have an `Active` workspace and decide to remove all your
+                      resources, your workspace is set to `Inactive` after all your
+                      resources are removed.  **In progress**: When you instruct IBM
+                      Cloud Schematics to run your infrastructure code by applying
+                      your Terraform execution plan, the status of our workspace changes
+                      to `In progress`.  **Scanning**: The download of the Terraform
+                      template is complete and vulnerability scanning started. If
+                      the scan is successful, the workspace state changes to `Inactive`.
+                      If errors in your template are found, the state changes to `Template
+                      Error`.  **Stopped**: The Schematics plan, apply, or destroy
+                      action was cancelled manually.  **Template Error**: The Schematics
+                      template contains errors and cannot be processed.'
+                    type: string
+                  statusCode:
+                    description: The success or error code that was returned for the
+                      last plan, apply, or destroy action that ran against your workspace.
+                    type: string
+                  statusMsg:
+                    description: The success or error message that was returned for
+                      the last plan, apply, or destroy action that ran against your
+                      workspace.
+                    type: string
+                  tags:
+                    description: A list of tags that are associated with the workspace.
+                    items:
+                      type: string
+                    type: array
+                  templateGitBranch:
+                    description: A list of environment variables that you want to
+                      apply during the execution of a bash script or Terraform action.
+                      This field must be provided as a list of key-value pairs, for
+                      example, **TF_LOG=debug**. Each entry will be a map with one
+                      entry where `key is the environment variable name and value
+                      is value`. You can define environment variables for IBM Cloud
+                      catalog offerings that are provisioned by using a bash script.
+                      The branch in GitHub where your Terraform template is stored.
+                    type: string
+                  templateGitFolder:
+                    description: The subfolder in your GitHub or GitLab repository
+                      where your Terraform template is stored.
+                    type: string
+                  templateGitHasUploadedgitrepotar:
+                    description: Has uploaded git repo tar
+                    type: boolean
+                  templateGitRelease:
+                    description: The release tag in GitHub of your Terraform template.
+                    type: string
+                  templateGitRepoShaValue:
+                    description: Repo SHA value.
+                    type: string
+                  templateGitRepoURL:
+                    description: The URL to the repository where the IBM Cloud catalog
+                      software template is stored.
+                    type: string
+                  templateGitURL:
+                    description: The URL to the GitHub or GitLab repository where
+                      your Terraform and public bit bucket template is stored. For
+                      more information of the environment variable syntax, see [Create
+                      workspace new](/docs/schematics?topic=schematics-schematics-cli-reference#schematics-workspace-new).
+                    type: string
+                  templateInitStateFile:
+                    description: The content of an existing Terraform statefile that
+                      you want to import in to your workspace. To get the content
+                      of a Terraform statefile for a specific Terraform template in
+                      an existing workspace, run `ibmcloud terraform state pull --id
+                      <workspace_id> --template <template_id>`.
+                    type: string
+                  templateInputs:
+                    description: VariablesRequest -.
+                    items:
+                      properties:
+                        description:
+                          description: The description of your input variable.
+                          type: string
+                        name:
+                          description: The name of the variable.
+                          type: string
+                        secure:
+                          description: If set to `true`, the value of your input variable
+                            is protected and not returned in your API response.
+                          type: boolean
+                        type:
+                          description: '`Terraform v0.11` supports `string`, `list`,
+                            `map` data type. For more information, about the syntax,
+                            see [Configuring input variables](https://www.terraform.io/docs/configuration-0-11/variables.html).
+                            <br> `Terraform v0.12` additionally, supports `bool`,
+                            `number` and complex data types such as `list(type)`,
+                            `map(type)`, `object({attribute name=type,..})`, `set(type)`,
+                            `tuple([type])`. For more information, about the syntax
+                            to use the complex data type, see [Configuring variables](https://www.terraform.io/docs/configuration/variables.html#type-constraints).'
+                          type: string
+                        useDefault:
+                          description: Variable uses default value; and is not over-ridden.
+                          type: boolean
+                        value:
+                          description: Enter the value as a string for the primitive
+                            types such as `bool`, `number`, `string`, and `HCL` format
+                            for the complex variables, as you provide in a `.tfvars`
+                            file. **You need to enter escaped string of `HCL` format
+                            for the complex variable value**. For more information,
+                            about how to declare variables in a terraform configuration
+                            file and provide value to schematics, see [Providing values
+                            for the declared variables](/docs/schematics?topic=schematics-create-tf-config#declare-variable).
+                          type: string
+                      required:
+                      - name
+                      - type
+                      - value
+                      type: object
+                    type: array
+                  templateRef:
+                    description: Workspace template ref.
+                    type: string
+                  templateType:
+                    description: The Terraform version that you want to use to run
+                      your Terraform code. Enter `terraform_v0.12` to use Terraform
+                      version 0.12, and `terraform_v0.11` to use Terraform version
+                      0.11. Make sure that your Terraform config files are compatible
+                      with the Terraform version that you select.
+                    type: string
+                  templateUninstallScriptName:
+                    description: Uninstall script name.
+                    type: string
+                  templateValues:
+                    description: 'A list of variable values that you want to apply
+                      during the Helm chart installation. The list must be provided
+                      in JSON format, such as `"autoscaling:  enabled: true  minReplicas:
+                      2"`. The values that you define here override the default Helm
+                      chart values. This field is supported only for IBM Cloud catalog
+                      offerings that are provisioned by using the Terraform Helm provider.'
+                    type: string
+                  updatedAt:
+                    description: List of values metadata. The timestamp when the workspace
+                      was last updated.
+                    type: string
+                  updatedBy:
+                    description: The user ID that updated the workspace.
+                    type: string
+                  xGithubToken:
+                    description: The personal access token to authenticate with your
+                      private GitHub or GitLab repository and access your Terraform
+                      template.
+                    type: string
+                required:
+                - name
+                - templateType
+                type: object
+              state:
+                properties:
+                  appliedShareddataIDS:
+                    description: List of applied shared dataset id.
+                    items:
+                      type: string
+                    type: array
+                  catalogRef:
+                    description: Information about the software template that you
+                      chose from the IBM Cloud catalog. This information is returned
+                      for IBM Cloud catalog offerings only.
+                    properties:
+                      dryRun:
+                        description: Dry run.
+                        type: boolean
+                      itemID:
+                        description: The ID of the software template that you chose
+                          to install from the IBM Cloud catalog. This software is
+                          provisioned with Schematics.
+                        type: string
+                      itemIconURL:
+                        description: The URL to the icon of the software template
+                          in the IBM Cloud catalog.
+                        type: string
+                      itemName:
+                        description: The name of the software that you chose to install
+                          from the IBM Cloud catalog.
+                        type: string
+                      itemReadmeURL:
+                        description: The URL to the readme file of the software template
+                          in the IBM Cloud catalog.
+                        type: string
+                      itemURL:
+                        description: The URL to the software template in the IBM Cloud
+                          catalog.
+                        type: string
+                      launchURL:
+                        description: The URL to the dashboard to access your software.
+                        type: string
+                      offeringVersion:
+                        description: The version of the software template that you
+                          chose to install from the IBM Cloud catalog.
+                        type: string
+                    type: object
+                  createdAt:
+                    description: The timestamp when the workspace was created.
+                    type: string
+                  createdBy:
+                    description: The user ID that created the workspace.
+                    type: string
+                  crn:
+                    description: Workspace CRN.
+                    type: string
+                  description:
+                    description: The description of the workspace.
+                    type: string
+                  frozen:
+                    description: If set to true, the workspace is frozen and changes
+                      to the workspace are disabled.
+                    type: boolean
+                  frozenAt:
+                    description: The timestamp when the workspace was frozen.
+                    type: string
+                  frozenBy:
+                    description: The user ID that froze the workspace.
+                    type: string
+                  id:
+                    type: string
+                  lastHealthCheckAt:
+                    description: The timestamp when the last health check was performed
+                      by Schematics.
+                    type: string
+                  location:
+                    description: The location where you want to create your Schematics
+                      workspace and run Schematics actions. The location that you
+                      enter must match the API endpoint that you use. For example,
+                      if you use the Frankfurt API endpoint, you must specify `eu-de`
+                      as your location. If you use an API endpoint for a geography
+                      and you do not specify a location, Schematics determines the
+                      location based on availability.
+                    type: string
+                  locked:
+                    description: If set to true, the workspace is locked and disabled
+                      for changes.
+                    type: boolean
+                  lockedBy:
+                    description: The user ID that initiated a resource-related action,
+                      such as applying or destroying resources, that locked the workspace.
+                    type: string
+                  lockedTime:
+                    description: The timestamp when the workspace was locked.
+                    type: string
+                  name:
+                    description: The name of your workspace. The name can be up to
+                      128 characters long and can include alphanumeric characters,
+                      spaces, dashes, and underscores. When you create a workspace
+                      for your own Terraform template, consider including the microservice
+                      component that you set up with your Terraform template and the
+                      IBM Cloud environment where you want to deploy your resources
+                      in your name.
+                    type: string
+                  resourceGroup:
+                    description: The ID of the resource group where you want to provision
+                      the workspace.
+                    type: string
+                  runtimeData:
+                    description: Information about the provisioning engine, state
+                      file, and runtime logs.
+                    items:
+                      properties:
+                        ID:
+                          description: The ID that was assigned to your Terraform
+                            template or IBM Cloud catalog software template.
+                          type: string
+                        engineCmd:
+                          description: The command that was used to apply the Terraform
+                            template or IBM Cloud catalog software template.
+                          type: string
+                        engineName:
+                          description: The provisioning engine that was used to apply
+                            the Terraform template or IBM Cloud catalog software template.
+                          type: string
+                        engineVersion:
+                          description: The version of the provisioning engine that
+                            was used.
+                          type: string
+                        logStoreURL:
+                          description: The URL to access the logs that were created
+                            during the creation, update, or deletion of your IBM Cloud
+                            resources.
+                          type: string
+                        stateStoreURL:
+                          description: List of Output values. List of resources. The
+                            URL where the Terraform statefile (`terraform.tfstate`)
+                            is stored. You can use the statefile to find an overview
+                            of IBM Cloud resources that were created by Schematics.
+                            Schematics uses the statefile as an inventory list to
+                            determine future create, update, or deletion actions.
+                          type: string
+                      type: object
+                    type: array
+                  sharedData:
+                    description: Information that is shared across templates in IBM
+                      Cloud catalog offerings. This information is not provided when
+                      you create a workspace from your own Terraform template.
+                    properties:
+                      clusterCreatedOn:
+                        description: Cluster created on.
+                        type: string
+                      clusterID:
+                        description: The ID of the cluster where you want to provision
+                          the resources of all IBM Cloud catalog templates that are
+                          included in the catalog offering.
+                        type: string
+                      clusterName:
+                        description: Cluster name.
+                        type: string
+                      clusterType:
+                        description: Cluster type.
+                        type: string
+                      namespace:
+                        description: The entitlement key that you want to use to install
+                          IBM Cloud entitled software. The Kubernetes namespace or
+                          OpenShift project where the resources of all IBM Cloud catalog
+                          templates that are included in the catalog offering are
+                          deployed into.
+                        type: string
+                      region:
+                        description: The IBM Cloud region that you want to use for
+                          the resources of all IBM Cloud catalog templates that are
+                          included in the catalog offering.
+                        type: string
+                      resourceGroupID:
+                        description: The ID of the resource group that you want to
+                          use for the resources of all IBM Cloud catalog templates
+                          that are included in the catalog offering.
+                        type: string
+                      workerCount:
+                        description: Cluster worker count.
+                        format: int64
+                        type: integer
+                      workerMachineType:
+                        description: Cluster worker type.
+                        type: string
+                    type: object
+                  status:
+                    description: 'The status of the workspace.  **Active**: After
+                      you successfully ran your infrastructure code by applying your
+                      Terraform execution plan, the state of your workspace changes
+                      to `Active`.  **Connecting**: Schematics tries to connect to
+                      the template in your source repo. If successfully connected,
+                      the template is downloaded and metadata, such as input parameters,
+                      is extracted. After the template is downloaded, the state of
+                      the workspace changes to `Scanning`.  **Draft**: The workspace
+                      is created without a reference to a GitHub or GitLab repository.  **Failed**:
+                      If errors occur during the execution of your infrastructure
+                      code in IBM Cloud Schematics, your workspace status is set to
+                      `Failed`.  **Inactive**: The Terraform template was scanned
+                      successfully and the workspace creation is complete. You can
+                      now start running Schematics plan and apply actions to provision
+                      the IBM Cloud resources that you specified in your template.
+                      If you have an `Active` workspace and decide to remove all your
+                      resources, your workspace is set to `Inactive` after all your
+                      resources are removed.  **In progress**: When you instruct IBM
+                      Cloud Schematics to run your infrastructure code by applying
+                      your Terraform execution plan, the status of our workspace changes
+                      to `In progress`.  **Scanning**: The download of the Terraform
+                      template is complete and vulnerability scanning started. If
+                      the scan is successful, the workspace state changes to `Inactive`.
+                      If errors in your template are found, the state changes to `Template
+                      Error`.  **Stopped**: The Schematics plan, apply, or destroy
+                      action was cancelled manually.  **Template Error**: The Schematics
+                      template contains errors and cannot be processed.'
+                    type: string
+                  statusCode:
+                    description: The success or error code that was returned for the
+                      last plan, apply, or destroy action that ran against your workspace.
+                    type: string
+                  statusMsg:
+                    description: The success or error message that was returned for
+                      the last plan, apply, or destroy action that ran against your
+                      workspace.
+                    type: string
+                  tags:
+                    description: A list of tags that are associated with the workspace.
+                    items:
+                      type: string
+                    type: array
+                  templateGitBranch:
+                    description: A list of environment variables that you want to
+                      apply during the execution of a bash script or Terraform action.
+                      This field must be provided as a list of key-value pairs, for
+                      example, **TF_LOG=debug**. Each entry will be a map with one
+                      entry where `key is the environment variable name and value
+                      is value`. You can define environment variables for IBM Cloud
+                      catalog offerings that are provisioned by using a bash script.
+                      The branch in GitHub where your Terraform template is stored.
+                    type: string
+                  templateGitFolder:
+                    description: The subfolder in your GitHub or GitLab repository
+                      where your Terraform template is stored.
+                    type: string
+                  templateGitHasUploadedgitrepotar:
+                    description: Has uploaded git repo tar
+                    type: boolean
+                  templateGitRelease:
+                    description: The release tag in GitHub of your Terraform template.
+                    type: string
+                  templateGitRepoShaValue:
+                    description: Repo SHA value.
+                    type: string
+                  templateGitRepoURL:
+                    description: The URL to the repository where the IBM Cloud catalog
+                      software template is stored.
+                    type: string
+                  templateGitURL:
+                    description: The URL to the GitHub or GitLab repository where
+                      your Terraform and public bit bucket template is stored. For
+                      more information of the environment variable syntax, see [Create
+                      workspace new](/docs/schematics?topic=schematics-schematics-cli-reference#schematics-workspace-new).
+                    type: string
+                  templateInitStateFile:
+                    description: The content of an existing Terraform statefile that
+                      you want to import in to your workspace. To get the content
+                      of a Terraform statefile for a specific Terraform template in
+                      an existing workspace, run `ibmcloud terraform state pull --id
+                      <workspace_id> --template <template_id>`.
+                    type: string
+                  templateInputs:
+                    description: VariablesRequest -.
+                    items:
+                      properties:
+                        description:
+                          description: The description of your input variable.
+                          type: string
+                        name:
+                          description: The name of the variable.
+                          type: string
+                        secure:
+                          description: If set to `true`, the value of your input variable
+                            is protected and not returned in your API response.
+                          type: boolean
+                        type:
+                          description: '`Terraform v0.11` supports `string`, `list`,
+                            `map` data type. For more information, about the syntax,
+                            see [Configuring input variables](https://www.terraform.io/docs/configuration-0-11/variables.html).
+                            <br> `Terraform v0.12` additionally, supports `bool`,
+                            `number` and complex data types such as `list(type)`,
+                            `map(type)`, `object({attribute name=type,..})`, `set(type)`,
+                            `tuple([type])`. For more information, about the syntax
+                            to use the complex data type, see [Configuring variables](https://www.terraform.io/docs/configuration/variables.html#type-constraints).'
+                          type: string
+                        useDefault:
+                          description: Variable uses default value; and is not over-ridden.
+                          type: boolean
+                        value:
+                          description: Enter the value as a string for the primitive
+                            types such as `bool`, `number`, `string`, and `HCL` format
+                            for the complex variables, as you provide in a `.tfvars`
+                            file. **You need to enter escaped string of `HCL` format
+                            for the complex variable value**. For more information,
+                            about how to declare variables in a terraform configuration
+                            file and provide value to schematics, see [Providing values
+                            for the declared variables](/docs/schematics?topic=schematics-create-tf-config#declare-variable).
+                          type: string
+                      required:
+                      - name
+                      - type
+                      - value
+                      type: object
+                    type: array
+                  templateRef:
+                    description: Workspace template ref.
+                    type: string
+                  templateType:
+                    description: The Terraform version that you want to use to run
+                      your Terraform code. Enter `terraform_v0.12` to use Terraform
+                      version 0.12, and `terraform_v0.11` to use Terraform version
+                      0.11. Make sure that your Terraform config files are compatible
+                      with the Terraform version that you select.
+                    type: string
+                  templateUninstallScriptName:
+                    description: Uninstall script name.
+                    type: string
+                  templateValues:
+                    description: 'A list of variable values that you want to apply
+                      during the Helm chart installation. The list must be provided
+                      in JSON format, such as `"autoscaling:  enabled: true  minReplicas:
+                      2"`. The values that you define here override the default Helm
+                      chart values. This field is supported only for IBM Cloud catalog
+                      offerings that are provisioned by using the Terraform Helm provider.'
+                    type: string
+                  updatedAt:
+                    description: List of values metadata. The timestamp when the workspace
+                      was last updated.
+                    type: string
+                  updatedBy:
+                    description: The user ID that updated the workspace.
+                    type: string
+                  xGithubToken:
+                    description: The personal access token to authenticate with your
+                      private GitHub or GitLab repository and access your Terraform
+                      template.
+                    type: string
+                required:
+                - name
+                - templateType
+                type: object
+              terminationPolicy:
+                enum:
+                - Delete
+                - DoNotTerminate
+                type: string
+              updatePolicy:
+                enum:
+                - Destroy
+                - DoNotDestroy
+                type: string
+            required:
+            - providerRef
+            - resource
+            type: object
+          status:
+            properties:
+              conditions:
+                items:
+                  properties:
+                    lastTransitionTime:
+                      description: Last time the condition transitioned from one status
+                        to another. This should be when the underlying condition changed.  If
+                        that is not known, then using the time when the API field
+                        changed is acceptable.
+                      format: date-time
+                      type: string
+                    message:
+                      description: A human readable message indicating details about
+                        the transition. This field may be empty.
+                      type: string
+                    observedGeneration:
+                      description: If set, this represents the .metadata.generation
+                        that the condition was set based upon. For instance, if .metadata.generation
+                        is currently 12, but the .status.condition[x].observedGeneration
+                        is 9, the condition is out of date with respect to the current
+                        state of the instance.
+                      format: int64
+                      type: integer
+                    reason:
+                      description: The reason for the condition's last transition
+                        in CamelCase. The specific API may choose whether or not this
+                        field is considered a guaranteed API. This field may not be
+                        empty.
+                      type: string
+                    status:
+                      description: Status of the condition, one of True, False, Unknown.
+                      type: string
+                    type:
+                      description: Type of condition in CamelCase or in foo.example.com/CamelCase.
+                        Many .condition.type values are consistent across resources
+                        like Available, but because arbitrary conditions can be useful
+                        (see .node.status.conditions), the ability to deconflict is
+                        important.
+                      type: string
+                  required:
+                  - lastTransitionTime
+                  - message
+                  - reason
+                  - status
+                  - type
+                  type: object
+                type: array
+              observedGeneration:
+                description: Resource generation, which is updated on mutation by
+                  the API Server.
+                format: int64
+                type: integer
+              phase:
+                description: Status defines the set of statuses a resource can have.
+                type: string
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
