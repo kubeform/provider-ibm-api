@@ -21,7 +21,7 @@ package externalversions
 import (
 	"fmt"
 
-	v1alpha1 "kubeform.dev/provider-ibm-api/apis/api/v1alpha1"
+	v1alpha1 "kubeform.dev/provider-ibm-api/apis/apigateway/v1alpha1"
 	appv1alpha1 "kubeform.dev/provider-ibm-api/apis/app/v1alpha1"
 	cdnv1alpha1 "kubeform.dev/provider-ibm-api/apis/cdn/v1alpha1"
 	certificatev1alpha1 "kubeform.dev/provider-ibm-api/apis/certificate/v1alpha1"
@@ -95,11 +95,11 @@ func (f *genericInformer) Lister() cache.GenericLister {
 // TODO extend this to unknown resources with a client pool
 func (f *sharedInformerFactory) ForResource(resource schema.GroupVersionResource) (GenericInformer, error) {
 	switch resource {
-	// Group=api.ibm.kubeform.com, Version=v1alpha1
-	case v1alpha1.SchemeGroupVersion.WithResource("gatewayendpoints"):
-		return &genericInformer{resource: resource.GroupResource(), informer: f.Api().V1alpha1().GatewayEndpoints().Informer()}, nil
-	case v1alpha1.SchemeGroupVersion.WithResource("gatewayendpointsubscriptions"):
-		return &genericInformer{resource: resource.GroupResource(), informer: f.Api().V1alpha1().GatewayEndpointSubscriptions().Informer()}, nil
+	// Group=apigateway.ibm.kubeform.com, Version=v1alpha1
+	case v1alpha1.SchemeGroupVersion.WithResource("endpoints"):
+		return &genericInformer{resource: resource.GroupResource(), informer: f.Apigateway().V1alpha1().Endpoints().Informer()}, nil
+	case v1alpha1.SchemeGroupVersion.WithResource("endpointsubscriptions"):
+		return &genericInformer{resource: resource.GroupResource(), informer: f.Apigateway().V1alpha1().EndpointSubscriptions().Informer()}, nil
 
 		// Group=app.ibm.kubeform.com, Version=v1alpha1
 	case appv1alpha1.SchemeGroupVersion.WithResource("apps"):

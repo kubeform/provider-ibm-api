@@ -20,6 +20,8 @@ package fake
 
 import (
 	clientset "kubeform.dev/provider-ibm-api/client/clientset/versioned"
+	apigatewayv1alpha1 "kubeform.dev/provider-ibm-api/client/clientset/versioned/typed/apigateway/v1alpha1"
+	fakeapigatewayv1alpha1 "kubeform.dev/provider-ibm-api/client/clientset/versioned/typed/apigateway/v1alpha1/fake"
 	appv1alpha1 "kubeform.dev/provider-ibm-api/client/clientset/versioned/typed/app/v1alpha1"
 	fakeappv1alpha1 "kubeform.dev/provider-ibm-api/client/clientset/versioned/typed/app/v1alpha1/fake"
 	cdnv1alpha1 "kubeform.dev/provider-ibm-api/client/clientset/versioned/typed/cdn/v1alpha1"
@@ -34,8 +36,6 @@ import (
 	fakecomputev1alpha1 "kubeform.dev/provider-ibm-api/client/clientset/versioned/typed/compute/v1alpha1/fake"
 	containerv1alpha1 "kubeform.dev/provider-ibm-api/client/clientset/versioned/typed/container/v1alpha1"
 	fakecontainerv1alpha1 "kubeform.dev/provider-ibm-api/client/clientset/versioned/typed/container/v1alpha1/fake"
-	corev1alpha1 "kubeform.dev/provider-ibm-api/client/clientset/versioned/typed/core/v1alpha1"
-	fakecorev1alpha1 "kubeform.dev/provider-ibm-api/client/clientset/versioned/typed/core/v1alpha1/fake"
 	cosv1alpha1 "kubeform.dev/provider-ibm-api/client/clientset/versioned/typed/cos/v1alpha1"
 	fakecosv1alpha1 "kubeform.dev/provider-ibm-api/client/clientset/versioned/typed/cos/v1alpha1/fake"
 	crv1alpha1 "kubeform.dev/provider-ibm-api/client/clientset/versioned/typed/cr/v1alpha1"
@@ -161,9 +161,9 @@ func (c *Clientset) Tracker() testing.ObjectTracker {
 
 var _ clientset.Interface = &Clientset{}
 
-// CoreV1alpha1 retrieves the CoreV1alpha1Client
-func (c *Clientset) CoreV1alpha1() corev1alpha1.CoreV1alpha1Interface {
-	return &fakecorev1alpha1.FakeCoreV1alpha1{Fake: &c.Fake}
+// ApigatewayV1alpha1 retrieves the ApigatewayV1alpha1Client
+func (c *Clientset) ApigatewayV1alpha1() apigatewayv1alpha1.ApigatewayV1alpha1Interface {
+	return &fakeapigatewayv1alpha1.FakeApigatewayV1alpha1{Fake: &c.Fake}
 }
 
 // AppV1alpha1 retrieves the AppV1alpha1Client

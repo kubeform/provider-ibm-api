@@ -24,6 +24,7 @@ import (
 	time "time"
 
 	versioned "kubeform.dev/provider-ibm-api/client/clientset/versioned"
+	apigateway "kubeform.dev/provider-ibm-api/client/informers/externalversions/apigateway"
 	app "kubeform.dev/provider-ibm-api/client/informers/externalversions/app"
 	cdn "kubeform.dev/provider-ibm-api/client/informers/externalversions/cdn"
 	certificate "kubeform.dev/provider-ibm-api/client/informers/externalversions/certificate"
@@ -31,7 +32,6 @@ import (
 	cm "kubeform.dev/provider-ibm-api/client/informers/externalversions/cm"
 	compute "kubeform.dev/provider-ibm-api/client/informers/externalversions/compute"
 	container "kubeform.dev/provider-ibm-api/client/informers/externalversions/container"
-	core "kubeform.dev/provider-ibm-api/client/informers/externalversions/core"
 	cos "kubeform.dev/provider-ibm-api/client/informers/externalversions/cos"
 	cr "kubeform.dev/provider-ibm-api/client/informers/externalversions/cr"
 	database "kubeform.dev/provider-ibm-api/client/informers/externalversions/database"
@@ -215,6 +215,7 @@ type SharedInformerFactory interface {
 	ForResource(resource schema.GroupVersionResource) (GenericInformer, error)
 	WaitForCacheSync(stopCh <-chan struct{}) map[reflect.Type]bool
 
+	Apigateway() apigateway.Interface
 	App() app.Interface
 	Cdn() cdn.Interface
 	Certificate() certificate.Interface
@@ -222,7 +223,6 @@ type SharedInformerFactory interface {
 	Cm() cm.Interface
 	Compute() compute.Interface
 	Container() container.Interface
-	Api() core.Interface
 	Cos() cos.Interface
 	Cr() cr.Interface
 	Database() database.Interface
@@ -260,6 +260,10 @@ type SharedInformerFactory interface {
 	Tg() tg.Interface
 }
 
+func (f *sharedInformerFactory) Apigateway() apigateway.Interface {
+	return apigateway.New(f, f.namespace, f.tweakListOptions)
+}
+
 func (f *sharedInformerFactory) App() app.Interface {
 	return app.New(f, f.namespace, f.tweakListOptions)
 }
@@ -286,10 +290,6 @@ func (f *sharedInformerFactory) Compute() compute.Interface {
 
 func (f *sharedInformerFactory) Container() container.Interface {
 	return container.New(f, f.namespace, f.tweakListOptions)
-}
-
-func (f *sharedInformerFactory) Api() core.Interface {
-	return core.New(f, f.namespace, f.tweakListOptions)
 }
 
 func (f *sharedInformerFactory) Cos() cos.Interface {
