@@ -19,6 +19,7 @@ limitations under the License.
 package fake
 
 import (
+	apigatewayv1alpha1 "kubeform.dev/provider-ibm-api/apis/apigateway/v1alpha1"
 	appv1alpha1 "kubeform.dev/provider-ibm-api/apis/app/v1alpha1"
 	cdnv1alpha1 "kubeform.dev/provider-ibm-api/apis/cdn/v1alpha1"
 	certificatev1alpha1 "kubeform.dev/provider-ibm-api/apis/certificate/v1alpha1"
@@ -26,7 +27,6 @@ import (
 	cmv1alpha1 "kubeform.dev/provider-ibm-api/apis/cm/v1alpha1"
 	computev1alpha1 "kubeform.dev/provider-ibm-api/apis/compute/v1alpha1"
 	containerv1alpha1 "kubeform.dev/provider-ibm-api/apis/container/v1alpha1"
-	corev1alpha1 "kubeform.dev/provider-ibm-api/apis/core/v1alpha1"
 	cosv1alpha1 "kubeform.dev/provider-ibm-api/apis/cos/v1alpha1"
 	crv1alpha1 "kubeform.dev/provider-ibm-api/apis/cr/v1alpha1"
 	databasev1alpha1 "kubeform.dev/provider-ibm-api/apis/database/v1alpha1"
@@ -74,7 +74,7 @@ var scheme = runtime.NewScheme()
 var codecs = serializer.NewCodecFactory(scheme)
 
 var localSchemeBuilder = runtime.SchemeBuilder{
-	corev1alpha1.AddToScheme,
+	apigatewayv1alpha1.AddToScheme,
 	appv1alpha1.AddToScheme,
 	cdnv1alpha1.AddToScheme,
 	certificatev1alpha1.AddToScheme,

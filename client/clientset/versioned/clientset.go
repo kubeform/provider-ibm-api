@@ -21,6 +21,7 @@ package versioned
 import (
 	"fmt"
 
+	apigatewayv1alpha1 "kubeform.dev/provider-ibm-api/client/clientset/versioned/typed/apigateway/v1alpha1"
 	appv1alpha1 "kubeform.dev/provider-ibm-api/client/clientset/versioned/typed/app/v1alpha1"
 	cdnv1alpha1 "kubeform.dev/provider-ibm-api/client/clientset/versioned/typed/cdn/v1alpha1"
 	certificatev1alpha1 "kubeform.dev/provider-ibm-api/client/clientset/versioned/typed/certificate/v1alpha1"
@@ -28,7 +29,6 @@ import (
 	cmv1alpha1 "kubeform.dev/provider-ibm-api/client/clientset/versioned/typed/cm/v1alpha1"
 	computev1alpha1 "kubeform.dev/provider-ibm-api/client/clientset/versioned/typed/compute/v1alpha1"
 	containerv1alpha1 "kubeform.dev/provider-ibm-api/client/clientset/versioned/typed/container/v1alpha1"
-	corev1alpha1 "kubeform.dev/provider-ibm-api/client/clientset/versioned/typed/core/v1alpha1"
 	cosv1alpha1 "kubeform.dev/provider-ibm-api/client/clientset/versioned/typed/cos/v1alpha1"
 	crv1alpha1 "kubeform.dev/provider-ibm-api/client/clientset/versioned/typed/cr/v1alpha1"
 	databasev1alpha1 "kubeform.dev/provider-ibm-api/client/clientset/versioned/typed/database/v1alpha1"
@@ -72,7 +72,7 @@ import (
 
 type Interface interface {
 	Discovery() discovery.DiscoveryInterface
-	CoreV1alpha1() corev1alpha1.CoreV1alpha1Interface
+	ApigatewayV1alpha1() apigatewayv1alpha1.ApigatewayV1alpha1Interface
 	AppV1alpha1() appv1alpha1.AppV1alpha1Interface
 	CdnV1alpha1() cdnv1alpha1.CdnV1alpha1Interface
 	CertificateV1alpha1() certificatev1alpha1.CertificateV1alpha1Interface
@@ -121,7 +121,7 @@ type Interface interface {
 // version included in a Clientset.
 type Clientset struct {
 	*discovery.DiscoveryClient
-	coreV1alpha1        *corev1alpha1.CoreV1alpha1Client
+	apigatewayV1alpha1  *apigatewayv1alpha1.ApigatewayV1alpha1Client
 	appV1alpha1         *appv1alpha1.AppV1alpha1Client
 	cdnV1alpha1         *cdnv1alpha1.CdnV1alpha1Client
 	certificateV1alpha1 *certificatev1alpha1.CertificateV1alpha1Client
@@ -166,9 +166,9 @@ type Clientset struct {
 	tgV1alpha1          *tgv1alpha1.TgV1alpha1Client
 }
 
-// CoreV1alpha1 retrieves the CoreV1alpha1Client
-func (c *Clientset) CoreV1alpha1() corev1alpha1.CoreV1alpha1Interface {
-	return c.coreV1alpha1
+// ApigatewayV1alpha1 retrieves the ApigatewayV1alpha1Client
+func (c *Clientset) ApigatewayV1alpha1() apigatewayv1alpha1.ApigatewayV1alpha1Interface {
+	return c.apigatewayV1alpha1
 }
 
 // AppV1alpha1 retrieves the AppV1alpha1Client
@@ -402,7 +402,7 @@ func NewForConfig(c *rest.Config) (*Clientset, error) {
 	}
 	var cs Clientset
 	var err error
-	cs.coreV1alpha1, err = corev1alpha1.NewForConfig(&configShallowCopy)
+	cs.apigatewayV1alpha1, err = apigatewayv1alpha1.NewForConfig(&configShallowCopy)
 	if err != nil {
 		return nil, err
 	}
@@ -586,7 +586,7 @@ func NewForConfig(c *rest.Config) (*Clientset, error) {
 // panics if there is an error in the config.
 func NewForConfigOrDie(c *rest.Config) *Clientset {
 	var cs Clientset
-	cs.coreV1alpha1 = corev1alpha1.NewForConfigOrDie(c)
+	cs.apigatewayV1alpha1 = apigatewayv1alpha1.NewForConfigOrDie(c)
 	cs.appV1alpha1 = appv1alpha1.NewForConfigOrDie(c)
 	cs.cdnV1alpha1 = cdnv1alpha1.NewForConfigOrDie(c)
 	cs.certificateV1alpha1 = certificatev1alpha1.NewForConfigOrDie(c)
@@ -637,7 +637,7 @@ func NewForConfigOrDie(c *rest.Config) *Clientset {
 // New creates a new Clientset for the given RESTClient.
 func New(c rest.Interface) *Clientset {
 	var cs Clientset
-	cs.coreV1alpha1 = corev1alpha1.New(c)
+	cs.apigatewayV1alpha1 = apigatewayv1alpha1.New(c)
 	cs.appV1alpha1 = appv1alpha1.New(c)
 	cs.cdnV1alpha1 = cdnv1alpha1.New(c)
 	cs.certificateV1alpha1 = certificatev1alpha1.New(c)
