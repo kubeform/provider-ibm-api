@@ -3,7 +3,7 @@
 
 # provider-ibm-api
 
-Kubeform CRDs for [Terraform Ibm Provider](https://github.com/ibm/terraform-provider-ibm)
+Kubeform CRDs for [Terraform IBM Cloud Provider](https://github.com/IBM-Cloud/terraform-provider-ibm)
 
 ## Installation
 
